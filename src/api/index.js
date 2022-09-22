@@ -12,13 +12,17 @@ import requests from './request';
 // }
 
 
+
 export const reqTimeList = () => {
     //发请求
     return requests({
-        url: '/msk/timeTable/gettime',
+        url: '/timeTable/get',
         method: 'get'
     })
 }
+
+
+
 
 
 export const reqGetchain = () => {
