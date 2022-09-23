@@ -101,9 +101,9 @@ export default {
   },
   methods: {
     async getChartsList() {
-      console.log(this.subtime);
+      console.log(this.time);
       let data = new FormData();
-      data.append("time", this.subtime);
+      data.append("time", this.time);
       let result = await requests.post("/allocationrat/history/get", data);
       console.log(result.data);
       //   let arr = [];
