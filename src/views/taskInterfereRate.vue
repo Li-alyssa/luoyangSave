@@ -35,6 +35,10 @@ export default {
           type: "category",
           boundaryGap: false,
           data: [],
+          axisLabel: {
+            interval: 0, //横轴信息全部显示
+            rotate: 30, //-30度角倾斜显示
+          },
         },
         yAxis: {
           type: "value",
@@ -101,27 +105,27 @@ export default {
   },
   methods: {
     async getChartsList() {
-      console.log(this.subtime);
+      // console.log(this.subtime);
       let data = new FormData();
       data.append("time", this.subtime);
       let result = await requests.post("/interferencerat/history/get", data);
       console.log(result.data);
-      //   let arr = [];
-      //   result.data.forEach((e) => {
-      //     arr.push(e.time.slice(0, 10));
-      //   });
-      //   let arr2 = [];
-      //   result.data.forEach((e) => {
-      //     arr2.push(e.validnum);
-      //   });
-      //   this.LineChartOption.xAxis.data = arr;
+      let arr = [];
+      result.data.forEach((e) => {
+        arr.push(e.time.slice(0, 10));
+      });
+      let arr2 = [];
+      result.data.forEach((e) => {
+        arr2.push(e.rateofsuccess);
+      });
+      this.LineChartOption.xAxis.data = arr;
 
       //   service.post("/back/statistic/flowStatistic").then((response) => {
       //     if (response.code != 0) {
       //     } else {
       // this.LineChartOption.legend.data = response.data.orgFlowRank;
-      //   this.LineChartOption.series[0].data = arr2;
-      this.LineChartOption.series[0].data = result.data;
+      this.LineChartOption.series[0].data = arr2;
+      // this.LineChartOption.series[0].data = result.data;
       this.LineChart.setOption(this.LineChartOption);
       // console.log(response.data.orgFlowRank);
       // }

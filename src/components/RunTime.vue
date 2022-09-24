@@ -1,7 +1,7 @@
 <template>
   <el-card>
     <el-header>
-      <div>{{ this.$route.params.time }}历史数据回放</div>
+      <div>实时数据</div>
     </el-header>
     <el-card
       style="
@@ -72,61 +72,54 @@
     </el-card>
     <div style="width: 1180px; margin-left: auto; margin-right: auto">
       <div>
-        <TaskFinishRate :time="$route.params.time" v-show="checked1 === true" />
+        <TaskFinishRate v-show="checked1 === true" />
       </div>
       <div>
-        <TaskInterfereRate
-          :time="$route.params.time"
-          v-show="checked2 === true"
-        />
+        <TaskInterfereRate v-show="checked2 === true" />
       </div>
       <div>
-        <TargetNum :time="$route.params.time" v-show="checked3 === true" />
+        <TargetNum v-show="checked3 === true" />
       </div>
       <div>
-        <NodeChargeNum :time="$route.params.time" v-show="checked4 === true" />
+        <NodeChargeNum v-show="checked4 === true" />
       </div>
       <div>
-        <NodeUsage :time="$route.params.time" v-show="checked5 === true" />
+        <NodeUsage v-show="checked5 === true" />
       </div>
       <div>
-        <BattleDamage :time="$route.params.time" v-show="checked6 === true" />
+        <BattleDamage v-show="checked6 === true" />
       </div>
       <div>
-        <AgentNum :time="$route.params.time" v-show="checked7 === true" />
+        <AgentNum v-show="checked7 === true" />
       </div>
       <div>
-        <EquipmentParameters
-          :time="$route.params.time"
-          v-show="checked8 === true"
-        />
+        <EquipmentParameters v-show="checked8 === true" />
       </div>
       <div>
-        <KillNum :time="$route.params.time" v-show="checked9 === true" />
+        <KillNum v-show="checked9 === true" />
       </div>
       <div>
-        <killRate :time="$route.params.time" v-show="checked10 === true" />
+        <killRate v-show="checked10 === true" />
       </div>
       <div>
-        <runKillNum :time="$route.params.time" v-show="checked11 === true" />
+        <runKillNum v-show="checked11 === true" />
       </div>
     </div>
   </el-card>
 </template>
 
 <script>
-import TaskFinishRate from "../views/taskFinishRate.vue";
-import TaskInterfereRate from "../views/taskInterfereRate.vue";
-import TargetNum from "../views/targetNum.vue";
-import NodeChargeNum from "../views/nodeChargeNum.vue";
-import NodeUsage from "../views/nodeUsage.vue";
-import AgentNum from "../views/agentNum.vue";
-import BattleDamage from "../views/battleDamage.vue";
-import EquipmentParameters from "../views/equipmentParameters.vue";
-import KillNum from "../views/killNum.vue";
-import killRate from "../views/killRate.vue";
-import runKillNum from "../views/runKillNum.vue";
-
+import TaskFinishRate from "../runViews/taskFinishRate.vue";
+import TaskInterfereRate from "../runViews/taskInterfereRate.vue";
+import TargetNum from "../runViews/targetNum.vue";
+import NodeChargeNum from "../runViews/nodeChargeNum.vue";
+import NodeUsage from "../runViews/nodeUsage.vue";
+import AgentNum from "../runViews/agentNum.vue";
+import BattleDamage from "../runViews/battleDamage.vue";
+import EquipmentParameters from "../runViews/equipmentParameters.vue";
+import KillNum from "../runViews/killNum.vue";
+import killRate from "../runViews/killRate.vue";
+import runKillNum from "../runViews/runKillNum.vue";
 export default {
   data() {
     return {
@@ -202,6 +195,6 @@ export default {
   },
 };
 </script>
-
-<style>
+    
+    <style>
 </style>

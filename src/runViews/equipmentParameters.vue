@@ -1,12 +1,12 @@
 <!-- // 页面文件中使用，如index.vue中 -->
 <template>
   <!-- echarts -->
-  <div id="main3" class="main_container"></div>
+  <div id="equipmentParameters" class="main_container"></div>
 </template>
-<script>
+      <script>
 import requests from "../api/request";
 export default {
-  name: "TerminalLine",
+  name: "equipmentParameters",
   props: ["time"],
   data() {
     return {
@@ -15,14 +15,14 @@ export default {
       LineChart: null,
       LineChartOption: {
         title: {
-          text: "杀伤链统计",
+          text: "战损统计",
           padding: 5,
         },
         tooltip: {
           trigger: "axis",
         },
         legend: {
-          data: ["杀伤链数量"],
+          data: ["战损"],
         },
         grid: {
           left: "3%",
@@ -41,10 +41,10 @@ export default {
         },
         series: [
           {
-            name: "杀伤链数量",
+            name: "战损",
             type: "line",
             stack: "Total",
-            data: [1, 2, 3, 4, 5, 6, 7],
+            data: [],
             smooth: true,
             areaStyle: {
               //填充的颜色
@@ -91,23 +91,28 @@ export default {
   //   this.LineChartOption.xAxis.data = this.week;
   // },
   mounted() {
-    this.LineChart = this.$echarts.init(document.getElementById("main3"));
-    this.getChartsList();
+    this.$nextTick(() => {
+      this.LineChart = this.$echarts.init(
+        document.getElementById("equipmentParameters")
+      );
+      this.getChartsList();
+    });
     // this.getBeforeDate();
   },
   methods: {
     async getChartsList() {
+      // console.log(this.subtime);
       let data = new FormData();
       data.append("time", this.subtime);
-      let result = await requests.post("/msk/chain/getvalid", data);
-      console.log(result.data);
+      let result = await requests.post("/battledamage/history/get", data);
+      // console.log(result.data);
       let arr = [];
       result.data.forEach((e) => {
         arr.push(e.time.slice(0, 10));
       });
       let arr2 = [];
       result.data.forEach((e) => {
-        arr2.push(e.validnum);
+        arr2.push(e.lossNum);
       });
       this.LineChartOption.xAxis.data = arr;
 
@@ -116,7 +121,7 @@ export default {
       //     } else {
       // this.LineChartOption.legend.data = response.data.orgFlowRank;
       this.LineChartOption.series[0].data = arr2;
-      //   this.LineChartOption.series[1].data = response.data.busFlow7;
+      // this.LineChartOption.series[0].data = arr2;
       this.LineChart.setOption(this.LineChartOption);
       // console.log(response.data.orgFlowRank);
       // }
@@ -144,7 +149,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+      <style scoped>
 .main_container {
   /* margin-left: 10px; */
   /* margin-top: 10px; */
@@ -154,3 +159,4 @@ export default {
   /* background-color: #111; */
 }
 </style>
+      

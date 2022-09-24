@@ -1,12 +1,12 @@
 <!-- // 页面文件中使用，如index.vue中 -->
 <template>
   <!-- echarts -->
-  <div id="main2" class="main_container"></div>
+  <div id="taskInterfereRate" class="main_container"></div>
 </template>
-<script>
+    <script>
 import requests from "../api/request";
 export default {
-  name: "TerminalLine",
+  name: "taskInterfereRate",
   props: ["time"],
   data() {
     return {
@@ -15,14 +15,14 @@ export default {
       LineChart: null,
       LineChartOption: {
         title: {
-          text: "杀伤链统计",
+          text: "干扰成功率统计",
           padding: 5,
         },
         tooltip: {
           trigger: "axis",
         },
         legend: {
-          data: ["杀伤链数量"],
+          data: ["干扰成功率"],
         },
         grid: {
           left: "3%",
@@ -35,16 +35,20 @@ export default {
           type: "category",
           boundaryGap: false,
           data: [],
+          axisLabel: {
+            interval: 0, //横轴信息全部显示
+            rotate: 30, //-30度角倾斜显示
+          },
         },
         yAxis: {
           type: "value",
         },
         series: [
           {
-            name: "杀伤链数量",
+            name: "干扰成功率",
             type: "line",
             stack: "Total",
-            data: [1, 2, 3, 4, 5, 6, 7],
+            data: [],
             smooth: true,
             areaStyle: {
               //填充的颜色
@@ -58,18 +62,18 @@ export default {
                 colorStops: [
                   {
                     offset: 0,
-                    color: "#06397d", // 0% 处的颜色
+                    color: "#F56C6C", // 0% 处的颜色
                   },
                   {
                     offset: 1,
-                    color: "#06397d", // 100% 处的颜色
+                    color: "#F56C6C", // 100% 处的颜色
                   },
                 ],
                 globalCoord: false, // 缺省为 false
               },
             },
             itemStyle: {
-              color: "#06397d",
+              color: "#6a7985",
               borderColor: "#13EFB7",
               borderWidth: 2,
             },
@@ -91,15 +95,20 @@ export default {
   //   this.LineChartOption.xAxis.data = this.week;
   // },
   mounted() {
-    this.LineChart = this.$echarts.init(document.getElementById("main2"));
-    this.getChartsList();
+    setTimeout(() => {
+      this.LineChart = this.$echarts.init(
+        document.getElementById("taskInterfereRate")
+      );
+      this.getChartsList();
+    }, 200);
     // this.getBeforeDate();
   },
   methods: {
     async getChartsList() {
+      // console.log(this.subtime);
       let data = new FormData();
       data.append("time", this.subtime);
-      let result = await requests.post("/msk/chain/getchain", data);
+      let result = await requests.post("/interferencerat/history/get", data);
       console.log(result.data);
       let arr = [];
       result.data.forEach((e) => {
@@ -107,7 +116,7 @@ export default {
       });
       let arr2 = [];
       result.data.forEach((e) => {
-        arr2.push(e.num);
+        arr2.push(e.rateofsuccess);
       });
       this.LineChartOption.xAxis.data = arr;
 
@@ -116,7 +125,7 @@ export default {
       //     } else {
       // this.LineChartOption.legend.data = response.data.orgFlowRank;
       this.LineChartOption.series[0].data = arr2;
-      //   this.LineChartOption.series[1].data = response.data.busFlow7;
+      // this.LineChartOption.series[0].data = result.data;
       this.LineChart.setOption(this.LineChartOption);
       // console.log(response.data.orgFlowRank);
       // }
@@ -144,7 +153,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+    <style scoped>
 .main_container {
   /* margin-left: 10px; */
   /* margin-top: 10px; */
@@ -154,3 +163,4 @@ export default {
   /* background-color: #111; */
 }
 </style>
+    

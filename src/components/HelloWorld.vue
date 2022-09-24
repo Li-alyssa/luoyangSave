@@ -7,20 +7,11 @@
       <div class="realTime">
         <el-button
           type="danger"
-          @click="timeVisible = true"
+          @click="handleRunTime"
           icon="el-icon-s-data"
           style="width: 300px; height: 50px"
           >实时</el-button
         >
-        <el-dialog title="实时类别" :visible.sync="timeVisible">
-          暂无
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="timeVisible = false">取 消</el-button>
-            <el-button type="primary" @click="timeVisible = false"
-              >确定</el-button
-            >
-          </div>
-        </el-dialog>
       </div>
 
       <div class="box1">
@@ -64,7 +55,6 @@
         </el-card>
       </div>
     </el-main>
-
     <el-footer></el-footer>
   </div>
 </template>
@@ -122,6 +112,9 @@ export default {
     },
     handleHistory(index, row) {
       this.$router.push(`/ChartsPage/${row.time.slice(0, 10)}`);
+    },
+    handleRunTime() {
+      this.$router.push("/RunTime");
     },
   },
 };

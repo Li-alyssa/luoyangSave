@@ -101,11 +101,11 @@ export default {
   },
   methods: {
     async getChartsList() {
-      console.log(this.subtime);
+      // console.log(this.subtime);
       let data = new FormData();
       data.append("time", this.subtime);
       let result = await requests.post("/battledamage/history/get", data);
-      console.log(result.data);
+      // console.log(result.data);
       let arr = [];
       result.data.forEach((e) => {
         arr.push(e.time.slice(0, 10));

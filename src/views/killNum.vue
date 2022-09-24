@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- echarts -->
-    <div id="battleDamage" class="main_container"></div>
+    <div id="nodeChargeNum" class="main_container"></div>
   </div>
 </template>
-  
-  
-  <script>
+      
+      
+      <script>
 import requests from "../api/request";
 export default {
   props: ["time"],
@@ -15,14 +15,13 @@ export default {
       subtime: this.time,
       LineChartOption: {
         title: {
-          text: "作战装备参数",
-          left: "center",
+          text: "杀伤链累计数量",
+        },
+        legend: {
+          data: ["侦察飞机死亡数量"],
         },
         tooltip: {
-          trigger: "item",
-        },
-        tooltip: {
-          trigger: "item",
+          show: true, // 是否显示
         },
         xAxis: {
           type: "category",
@@ -37,7 +36,7 @@ export default {
         },
         series: [
           {
-            name: "",
+            name: "侦察飞机死亡数量",
             type: "bar",
             data: [],
           },
@@ -48,7 +47,7 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.LineChart = this.$echarts.init(
-        document.getElementById("battleDamage")
+        document.getElementById("nodeChargeNum")
       );
       this.getChartsList();
     });
@@ -56,31 +55,35 @@ export default {
   },
   methods: {
     async getChartsList() {
-      let result = await requests.get("/equipmentparameters/get");
+      let data = new FormData();
+      data.append("time", this.subtime);
+      let result = await requests.post("/nodecharge/history/get", data);
       // console.log(result.data);
-      // console.log(Object.values(result.data[0]));
-      var arr1 = Object.values(result.data[0]);
-      // console.log(Object.keys(result.data[0]));
-      var arr2 = Object.keys(result.data[0]);
-      var newArr = [];
-      for (var i = 0; i < arr1.length; i++) {
-        newArr.push({
-          name: arr2[i],
-          value: arr1[i],
-          type: "bar",
-        });
-      }
-
-      // console.log(newArr);
-      this.LineChartOption.xAxis.data = arr2;
+      let arr1 = [];
+      result.data.forEach((e) => {
+        arr1.push(e.time);
+      });
+      let arr2 = [];
+      result.data.forEach((e) => {
+        arr2.push(e.scounterNum);
+      });
+      let arr3 = [];
+      result.data.forEach((e) => {
+        arr3.push(e.fighterNum);
+      });
+      let arr4 = [];
+      result.data.forEach((e) => {
+        arr4.push(e.attackerNum);
+      });
+      this.LineChartOption.xAxis.data = arr1;
 
       //   service.post("/back/statistic/flowStatistic").then((response) => {
       //     if (response.code != 0) {
       //     } else {
       // this.LineChartOption.legend.data = response.data.orgFlowRank;
-      this.LineChartOption.series[0].data = newArr;
-      // this.LineChartOption.series[0].data.name = result.data.key;
-      //   this.LineChartOption.series[1].data = arr3;
+      this.LineChartOption.series[0].data = arr2;
+      this.LineChartOption.series[1].data = arr3;
+      this.LineChartOption.series[2].data = arr4;
       //   this.LineChartOption.series[1].data = response.data.busFlow7;
       this.LineChart.setOption(this.LineChartOption);
       // console.log(response.data.orgFlowRank);
@@ -91,7 +94,7 @@ export default {
   },
 };
 </script>
-  <style scoped>
+      <style scoped>
 .main_container {
   width: 100%;
   height: 500px;
