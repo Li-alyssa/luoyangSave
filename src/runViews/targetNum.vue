@@ -1,4 +1,5 @@
 <template>
+  <!-- 获取实时的目标数量信息 -->
   <div>
     <!-- echarts -->
     <div id="targetNum" class="main_container"></div>
@@ -64,7 +65,7 @@ export default {
     async getChartsList() {
       let data = new FormData();
       data.append("time", this.subtime);
-      let result = await requests.post("/targetnum/history/get", data);
+      let result = await requests.get("/targetnum/current/get", data);
       // console.log(result.data);
       let arr1 = [];
       result.data.forEach((e) => {

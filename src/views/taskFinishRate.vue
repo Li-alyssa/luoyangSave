@@ -1,16 +1,20 @@
 <!-- // 页面文件中使用，如index.vue中 -->
 <template>
   <!-- echarts -->
-  <div id="taskFinishRate" class="main_container"></div>
+  <div>
+    <!-- <h1>{{ subtime }} ,{{ subid }}</h1> -->
+    <div id="taskFinishRate" class="main_container"></div>
+  </div>
 </template>
   <script>
 import requests from "../api/request";
 export default {
   name: "taskFinishRate",
-  props: ["time"],
+  props: ["id", "time"],
   data() {
     return {
       subtime: this.time,
+      subid: this.id,
       week: [],
       LineChart: null,
       LineChartOption: {
@@ -106,8 +110,9 @@ export default {
   methods: {
     async getChartsList() {
       // console.log(this.time);
-      let data = new FormData();
-      data.append("time", this.time);
+      let data = {};
+      data["id"] = this.id;
+      data["time"] = this.time;
       let result = await requests.post("/allocationrat/history/get", data);
       // console.log(result.data);
       let arr = [];
@@ -156,7 +161,7 @@ export default {
   <style scoped>
 .main_container {
   /* margin-left: 10px; */
-  /* margin-top: 10px; */
+  margin-top: 10px;
   width: 100%;
   height: 500px;
   overflow: hidden;

@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     async getChartsList() {
-      let result = await requests.get("/agentnum/get");
+      let result = await requests.get("/agentnum/get"); //更改接口
       // console.log(result.data);
       var reg = new RegExp("number", "g"); //g表示全部的
       //         // //将json转换为字符串   将被替换内容替换为替换内容

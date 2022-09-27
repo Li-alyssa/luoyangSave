@@ -98,6 +98,7 @@ export default {
 .main_container {
   width: 100%;
   height: 500px;
+  margin-top: 10px;
   overflow: hidden;
 }
 </style>

@@ -9,13 +9,15 @@
       <script>
 import requests from "../api/request";
 export default {
-  props: ["time"],
+  props: ["time", "id"],
   data() {
     return {
       subtime: this.time,
+      subid: this.id,
+
       LineChartOption: {
         title: {
-          text: "杀伤链累计数量",
+          text: "杀伤链数量",
         },
         legend: {
           data: ["侦察飞机死亡数量"],
@@ -55,9 +57,14 @@ export default {
   },
   methods: {
     async getChartsList() {
-      let data = new FormData();
-      data.append("time", this.subtime);
-      let result = await requests.post("/nodecharge/history/get", data);
+      let data = {};
+      data["id"] = this.id;
+      data["time"] = this.time;
+
+      let result = await requests.post(
+        "/killchainefficiency/history/get",
+        data
+      );
       // console.log(result.data);
       let arr1 = [];
       result.data.forEach((e) => {
@@ -98,6 +105,7 @@ export default {
 .main_container {
   width: 100%;
   height: 500px;
+  margin-top: 10px;
   overflow: hidden;
 }
 </style>

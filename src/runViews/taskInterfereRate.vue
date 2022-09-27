@@ -1,5 +1,6 @@
 <!-- // 页面文件中使用，如index.vue中 -->
 <template>
+  <!-- 获取实时的干扰成功率 -->
   <!-- echarts -->
   <div id="taskInterfereRate" class="main_container"></div>
 </template>
@@ -106,9 +107,9 @@ export default {
   methods: {
     async getChartsList() {
       // console.log(this.subtime);
-      let data = new FormData();
-      data.append("time", this.subtime);
-      let result = await requests.post("/interferencerat/history/get", data);
+      // let data = new FormData();
+      // data.append("time", this.subtime);
+      let result = await requests.get("/interferencerat/current/get", data);
       console.log(result.data);
       let arr = [];
       result.data.forEach((e) => {

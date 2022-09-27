@@ -64,7 +64,7 @@
           :checked="checked10"
         ></el-checkbox>
         <el-checkbox
-          label="当前时刻杀伤链数量"
+          label="杀伤链成功率"
           @change="checkboxGroup11"
           :checked="checked11"
         ></el-checkbox>
@@ -99,10 +99,10 @@
         <KillNum v-show="checked9 === true" />
       </div>
       <div>
-        <killRate v-show="checked10 === true" />
+        <KillRate v-show="checked10 === true" />
       </div>
       <div>
-        <runKillNum v-show="checked11 === true" />
+        <KillSuccessfulNum v-show="checked11 === true" />
       </div>
     </div>
   </el-card>
@@ -118,8 +118,8 @@ import AgentNum from "../runViews/agentNum.vue";
 import BattleDamage from "../runViews/battleDamage.vue";
 import EquipmentParameters from "../runViews/equipmentParameters.vue";
 import KillNum from "../runViews/killNum.vue";
-import killRate from "../runViews/killRate.vue";
-import runKillNum from "../runViews/runKillNum.vue";
+import KillRate from "../runViews/killRate.vue";
+import KillSuccessfulNum from "../runViews/killSuccessfulNum.vue";
 export default {
   data() {
     return {
@@ -148,8 +148,8 @@ export default {
     BattleDamage,
     EquipmentParameters,
     KillNum,
-    killRate,
-    runKillNum,
+    KillRate,
+    KillSuccessfulNum,
   },
   methods: {
     checkboxGroup1(row) {

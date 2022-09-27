@@ -9,10 +9,12 @@
     <script>
 import requests from "../api/request";
 export default {
-  props: ["time"],
+  props: ["time", "id"],
   data() {
     return {
       subtime: this.time,
+      subid: this.id,
+
       LineChartOption: {
         title: {
           text: "作战智能体数量变化",
@@ -65,8 +67,10 @@ export default {
   },
   methods: {
     async getChartsList() {
-      let data = new FormData();
-      data.append("time", this.subtime);
+      let data = {};
+      data["id"] = this.id;
+      data["time"] = this.time;
+
       let result = await requests.post("/nodecharge/history/get", data);
       // console.log(result.data);
       let arr1 = [];
@@ -109,5 +113,6 @@ export default {
   width: 100%;
   height: 500px;
   overflow: hidden;
+  margin-top: 10px;
 }
 </style>

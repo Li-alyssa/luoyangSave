@@ -69,6 +69,8 @@ export default {
       activeCharts: 0,
       centerDialogVisible: false,
       tableData: [],
+      reciId: "",
+      receTime: "",
       page: 1,
       pageSize: 3,
       total: 0,
@@ -100,8 +102,12 @@ export default {
     // },
     async getTimeList() {
       let result = await this.$API.reqTimeList();
-      console.log(result);
-      this.tableData = result.data;
+      // console.log(result.data[0].id);
+      // console.log(result.data[0].time);
+      (this.reciId = result.data[0].id),
+        (this.receTime = result.data[0].time),
+        (this.tableData = result.data);
+      console.log(this.reciId, this.receTime);
     },
     handleBack(index, row) {
       this.centerDialogVisible = true;
@@ -111,7 +117,14 @@ export default {
       let result = requests.post("/msk/chain/getchain", data);
     },
     handleHistory(index, row) {
-      this.$router.push(`/ChartsPage/${row.time.slice(0, 10)}`);
+      // this.$router.push(`/ChartsPage/${row.time.slice(0, 10)}`);
+      this.$router.push({
+        name: "ChartsPage",
+        params: {
+          id: this.reciId,
+          time: this.receTime,
+        },
+      });
     },
     handleRunTime() {
       this.$router.push("/RunTime");

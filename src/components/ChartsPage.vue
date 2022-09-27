@@ -1,7 +1,9 @@
 <template>
   <el-card>
     <el-header>
-      <div>{{ this.$route.params.time }}历史数据回放</div>
+      <div>
+        {{ this.$route.params.time }}历史数据回放{{ this.$route.params.id }}
+      </div>
     </el-header>
     <el-card
       style="
@@ -54,7 +56,7 @@
           :checked="checked8"
         ></el-checkbox>
         <el-checkbox
-          label="杀伤链累计数量"
+          label="杀伤链数量"
           @change="checkboxGroup9"
           :checked="checked9"
         ></el-checkbox>
@@ -64,7 +66,7 @@
           :checked="checked10"
         ></el-checkbox>
         <el-checkbox
-          label="当前时刻杀伤链数量"
+          label="杀伤链成功率"
           @change="checkboxGroup11"
           :checked="checked11"
         ></el-checkbox>
@@ -72,43 +74,81 @@
     </el-card>
     <div style="width: 1180px; margin-left: auto; margin-right: auto">
       <div>
-        <TaskFinishRate :time="$route.params.time" v-show="checked1 === true" />
+        <TaskFinishRate
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked1 === true"
+        />
       </div>
       <div>
         <TaskInterfereRate
           :time="$route.params.time"
           v-show="checked2 === true"
+          :id="$route.params.id"
         />
       </div>
       <div>
-        <TargetNum :time="$route.params.time" v-show="checked3 === true" />
+        <TargetNum
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked3 === true"
+        />
       </div>
       <div>
-        <NodeChargeNum :time="$route.params.time" v-show="checked4 === true" />
+        <NodeChargeNum
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked4 === true"
+        />
       </div>
       <div>
-        <NodeUsage :time="$route.params.time" v-show="checked5 === true" />
+        <NodeUsage
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked5 === true"
+        />
       </div>
       <div>
-        <BattleDamage :time="$route.params.time" v-show="checked6 === true" />
+        <BattleDamage
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked6 === true"
+        />
       </div>
       <div>
-        <AgentNum :time="$route.params.time" v-show="checked7 === true" />
+        <AgentNum
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked7 === true"
+        />
       </div>
       <div>
         <EquipmentParameters
           :time="$route.params.time"
+          :id="$route.params.id"
           v-show="checked8 === true"
         />
       </div>
       <div>
-        <KillNum :time="$route.params.time" v-show="checked9 === true" />
+        <KillNum
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked9 === true"
+        />
       </div>
       <div>
-        <killRate :time="$route.params.time" v-show="checked10 === true" />
+        <killRate
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked10 === true"
+        />
       </div>
       <div>
-        <runKillNum :time="$route.params.time" v-show="checked11 === true" />
+        <runKillNum
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked11 === true"
+        />
       </div>
     </div>
   </el-card>

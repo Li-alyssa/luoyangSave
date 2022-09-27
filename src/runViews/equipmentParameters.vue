@@ -7,10 +7,12 @@
 import requests from "../api/request";
 export default {
   name: "equipmentParameters",
-  props: ["time"],
+  props: ["time", "id"],
   data() {
     return {
-      subtime: this.time,
+      // subtime: this.time,
+      time1: this.time,
+      id1: this.id,
       week: [],
       LineChart: null,
       LineChartOption: {
@@ -102,10 +104,12 @@ export default {
   methods: {
     async getChartsList() {
       // console.log(this.subtime);
-      let data = new FormData();
-      data.append("time", this.subtime);
-      let result = await requests.post("/battledamage/history/get", data);
-      // console.log(result.data);
+      // let data = {};
+      // data["id"] = this.id1;
+      // data["time"] = this.time1;
+
+      let result = await requests.get("/battledamage/history/get", data);
+      console.log(result.data);
       let arr = [];
       result.data.forEach((e) => {
         arr.push(e.time.slice(0, 10));

@@ -15,7 +15,7 @@ export default {
       subtime: this.time,
       LineChartOption: {
         title: {
-          text: "杀伤链累计数量",
+          text: "杀伤链效率",
         },
         legend: {
           data: ["侦察飞机死亡数量"],
@@ -57,7 +57,10 @@ export default {
     async getChartsList() {
       let data = new FormData();
       data.append("time", this.subtime);
-      let result = await requests.post("/nodecharge/history/get", data);
+      let result = await requests.post(
+        "/killchainefficiency/current/get",
+        data
+      );
       // console.log(result.data);
       let arr1 = [];
       result.data.forEach((e) => {

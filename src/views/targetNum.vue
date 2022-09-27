@@ -9,10 +9,12 @@
   <script>
 import requests from "../api/request";
 export default {
-  props: ["time"],
+  props: ["time", "id"],
   data() {
     return {
       subtime: this.time,
+      subtid: this.id,
+
       LineChartOption: {
         title: {
           text: "发现目标数量",
@@ -62,8 +64,9 @@ export default {
   },
   methods: {
     async getChartsList() {
-      let data = new FormData();
-      data.append("time", this.subtime);
+      let data = {};
+      data["id"] = this.id;
+      data["time"] = this.time;
       let result = await requests.post("/targetnum/history/get", data);
       // console.log(result.data);
       let arr1 = [];
@@ -105,6 +108,7 @@ export default {
 .main_container {
   width: 100%;
   height: 500px;
+  margin-top: 10px;
   overflow: hidden;
 }
 </style>

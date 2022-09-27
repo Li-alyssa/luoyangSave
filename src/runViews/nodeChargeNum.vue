@@ -1,4 +1,5 @@
 <template>
+  <!-- 获取实时的体系节点数量 -->
   <div>
     <!-- echarts -->
     <div id="nodeChargeNum" class="main_container"></div>
@@ -67,7 +68,7 @@ export default {
     async getChartsList() {
       let data = new FormData();
       data.append("time", this.subtime);
-      let result = await requests.post("/nodecharge/history/get", data);
+      let result = await requests.post("/nodecharge/current/get", data);
       // console.log(result.data);
       let arr1 = [];
       result.data.forEach((e) => {

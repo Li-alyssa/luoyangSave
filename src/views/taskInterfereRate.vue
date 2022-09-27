@@ -7,10 +7,12 @@
 import requests from "../api/request";
 export default {
   name: "taskInterfereRate",
-  props: ["time"],
+  props: ["time", "id"],
   data() {
     return {
       subtime: this.time,
+      subid: this.id,
+
       week: [],
       LineChart: null,
       LineChartOption: {
@@ -106,8 +108,9 @@ export default {
   methods: {
     async getChartsList() {
       // console.log(this.subtime);
-      let data = new FormData();
-      data.append("time", this.subtime);
+      let data = {};
+      data["id"] = this.id;
+      data["time"] = this.time;
       let result = await requests.post("/interferencerat/history/get", data);
       console.log(result.data);
       let arr = [];
@@ -156,7 +159,7 @@ export default {
     <style scoped>
 .main_container {
   /* margin-left: 10px; */
-  /* margin-top: 10px; */
+  margin-top: 10px;
   width: 100%;
   height: 500px;
   overflow: hidden;
