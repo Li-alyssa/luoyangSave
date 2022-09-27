@@ -1,24 +1,22 @@
 <template>
   <div>
     <!-- echarts -->
-    <div id="nodeChargeNum" class="main_container"></div>
+    <div id="runKillNum" class="main_container"></div>
   </div>
 </template>
-          
-          
-          <script>
+<script>
 import requests from "../api/request";
 export default {
-  props: ["time"],
+  props: ["id", "time"],
   data() {
     return {
       subtime: this.time,
       LineChartOption: {
         title: {
-          text: "杀伤链累计数量",
+          text: "杀伤链的成功率",
         },
         legend: {
-          data: ["侦察飞机死亡数量"],
+          // data: ["侦察飞机死亡数量"],
         },
         tooltip: {
           show: true, // 是否显示
@@ -36,7 +34,17 @@ export default {
         },
         series: [
           {
-            name: "侦察飞机死亡数量",
+            name: "destoryedSum",
+            type: "bar",
+            data: [],
+          },
+          {
+            name: "killchainNum",
+            type: "bar",
+            data: [],
+          },
+          {
+            name: "efficience",
             type: "bar",
             data: [],
           },
@@ -47,7 +55,7 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.LineChart = this.$echarts.init(
-        document.getElementById("nodeChargeNum")
+        document.getElementById("runKillNum")
       );
       this.getChartsList();
     });
@@ -55,25 +63,26 @@ export default {
   },
   methods: {
     async getChartsList() {
-      let data = new FormData();
-      data.append("time", this.subtime);
-      let result = await requests.post("/nodecharge/history/get", data);
-      // console.log(result.data);
+      let data = {};
+      data["id"] = this.id;
+      data["time"] = this.time;
+      let result = await requests.post("/chainsuccessful/history/get", data);
+      console.log(result.data);
       let arr1 = [];
       result.data.forEach((e) => {
         arr1.push(e.time);
       });
       let arr2 = [];
       result.data.forEach((e) => {
-        arr2.push(e.scounterNum);
+        arr2.push(e.destoryedSum);
       });
       let arr3 = [];
       result.data.forEach((e) => {
-        arr3.push(e.fighterNum);
+        arr3.push(e.killchainNum);
       });
       let arr4 = [];
       result.data.forEach((e) => {
-        arr4.push(e.attackerNum);
+        arr4.push(e.efficience);
       });
       this.LineChartOption.xAxis.data = arr1;
 

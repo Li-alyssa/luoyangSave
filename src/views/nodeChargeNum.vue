@@ -9,7 +9,7 @@
     <script>
 import requests from "../api/request";
 export default {
-  props: ["time", "id"],
+  props: ["id", "time"],
   data() {
     return {
       subtime: this.time,
@@ -20,7 +20,7 @@ export default {
           text: "作战智能体数量变化",
         },
         legend: {
-          data: ["侦察飞机死亡数量", "决策飞机死亡数量", "攻击飞机死亡数量"],
+          // data: [],
         },
         tooltip: {
           show: true, // 是否显示
@@ -52,6 +52,21 @@ export default {
             type: "bar",
             data: [],
           },
+          {
+            name: "scounterQuantity",
+            type: "bar",
+            data: [],
+          },
+          {
+            name: "decisionQuantity",
+            type: "bar",
+            data: [],
+          },
+          {
+            name: "attackerQuantity",
+            type: "bar",
+            data: [],
+          },
         ],
       },
     };
@@ -68,8 +83,8 @@ export default {
   methods: {
     async getChartsList() {
       let data = {};
-      data["id"] = this.id;
-      data["time"] = this.time;
+      data["id"] = this.subid;
+      data["time"] = this.subtime;
 
       let result = await requests.post("/nodecharge/history/get", data);
       // console.log(result.data);
@@ -89,6 +104,18 @@ export default {
       result.data.forEach((e) => {
         arr4.push(e.attackerNum);
       });
+      let arr5 = [];
+      result.data.forEach((e) => {
+        arr5.push(e.scounterQuantity);
+      });
+      let arr6 = [];
+      result.data.forEach((e) => {
+        arr6.push(e.decisionQuantity);
+      });
+      let arr7 = [];
+      result.data.forEach((e) => {
+        arr7.push(e.attackerQuantity);
+      });
       this.LineChartOption.xAxis.data = arr1;
 
       //   service.post("/back/statistic/flowStatistic").then((response) => {
@@ -98,6 +125,9 @@ export default {
       this.LineChartOption.series[0].data = arr2;
       this.LineChartOption.series[1].data = arr3;
       this.LineChartOption.series[2].data = arr4;
+      this.LineChartOption.series[3].data = arr5;
+      this.LineChartOption.series[4].data = arr6;
+      this.LineChartOption.series[5].data = arr7;
       //   this.LineChartOption.series[1].data = response.data.busFlow7;
       this.LineChart.setOption(this.LineChartOption);
       // console.log(response.data.orgFlowRank);

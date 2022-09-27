@@ -1,23 +1,19 @@
 <template>
   <div>
     <!-- echarts -->
-    <div id="killNum" class="main_container"></div>
+    <div id="killFinishTime" class="main_container"></div>
   </div>
 </template>
-      
-      
-      <script>
+  <script>
 import requests from "../api/request";
 export default {
-  props: ["time", "id"],
+  props: ["id", "time"],
   data() {
     return {
       subtime: this.time,
-      subid: this.id,
-
       LineChartOption: {
         title: {
-          text: "杀伤链数量",
+          text: "杀伤链完成时间",
         },
         legend: {
           // data: ["侦察飞机死亡数量"],
@@ -38,9 +34,9 @@ export default {
         },
         series: [
           {
-            name: "当前时刻杀伤链数量",
+            name: "杀伤链完成时间",
             type: "bar",
-            data: [122, 12, 34, 567, 89, 234, 678],
+            data: [],
           },
         ],
       },
@@ -48,7 +44,9 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.LineChart = this.$echarts.init(document.getElementById("killNum"));
+      this.LineChart = this.$echarts.init(
+        document.getElementById("killFinishTime")
+      );
       this.getChartsList();
     });
     // this.getBeforeDate();
@@ -58,12 +56,24 @@ export default {
       let data = {};
       data["id"] = this.id;
       data["time"] = this.time;
+      let result = await requests.post("/killchain/findComTime", data);
+      console.log(result.data);
+      let arr1 = [];
+      result.data.forEach((e) => {
+        arr1.push(e.time);
+      });
+      let arr2 = [];
+      result.data.forEach((e) => {
+        arr2.push(e.completiontime);
+      });
+      this.LineChartOption.xAxis.data = arr1;
 
-      // let result = await requests.get("/killchain/find");
-      // console.log(result.data);
-      // this.LineChartOption.series[0].data = result.data;
-      // this.LineChartOption.xAxis.data = arr1;
-
+      //   service.post("/back/statistic/flowStatistic").then((response) => {
+      //     if (response.code != 0) {
+      //     } else {
+      // this.LineChartOption.legend.data = response.data.orgFlowRank;
+      this.LineChartOption.series[0].data = arr2;
+      //   this.LineChartOption.series[1].data = response.data.busFlow7;
       this.LineChart.setOption(this.LineChartOption);
       // console.log(response.data.orgFlowRank);
       // }
@@ -73,7 +83,7 @@ export default {
   },
 };
 </script>
-      <style scoped>
+            <style scoped>
 .main_container {
   width: 100%;
   height: 500px;

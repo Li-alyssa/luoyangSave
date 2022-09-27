@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- echarts -->
-    <div id="killNum" class="main_container"></div>
+    <div id="killFallRate" class="main_container"></div>
   </div>
 </template>
-      
-      
-      <script>
+        
+        
+        <script>
 import requests from "../api/request";
 export default {
   props: ["time", "id"],
@@ -17,7 +17,7 @@ export default {
 
       LineChartOption: {
         title: {
-          text: "杀伤链数量",
+          text: "杀伤链失败率",
         },
         legend: {
           // data: ["侦察飞机死亡数量"],
@@ -27,7 +27,7 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: [],
+          data: [1, 2, 3, 4, 5, 6, 7],
           axisLabel: {
             interval: 0, //横轴信息全部显示
             rotate: 30, //-30度角倾斜显示
@@ -38,9 +38,9 @@ export default {
         },
         series: [
           {
-            name: "当前时刻杀伤链数量",
+            name: "杀伤链失败率",
             type: "bar",
-            data: [122, 12, 34, 567, 89, 234, 678],
+            data: [],
           },
         ],
       },
@@ -48,7 +48,9 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.LineChart = this.$echarts.init(document.getElementById("killNum"));
+      this.LineChart = this.$echarts.init(
+        document.getElementById("killFallRate")
+      );
       this.getChartsList();
     });
     // this.getBeforeDate();
@@ -59,10 +61,10 @@ export default {
       data["id"] = this.id;
       data["time"] = this.time;
 
-      // let result = await requests.get("/killchain/find");
-      // console.log(result.data);
-      // this.LineChartOption.series[0].data = result.data;
-      // this.LineChartOption.xAxis.data = arr1;
+      let result = await requests.post("/chainsuccessful/find", data);
+      console.log(result.data);
+      this.LineChartOption.series[0].data = result.data;
+      //   this.LineChartOption.xAxis.data = arr1;
 
       this.LineChart.setOption(this.LineChartOption);
       // console.log(response.data.orgFlowRank);
@@ -73,7 +75,7 @@ export default {
   },
 };
 </script>
-      <style scoped>
+        <style scoped>
 .main_container {
   width: 100%;
   height: 500px;

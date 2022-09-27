@@ -38,11 +38,11 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: [],
-          axisLabel: {
-            interval: 0, //横轴信息全部显示
-            rotate: 30, //-30度角倾斜显示
-          },
+          data: ["2022-09-28 05:31:00"],
+          // axisLabel: {
+          //   interval: 0, //横轴信息全部显示
+          //   rotate: 30, //-30度角倾斜显示
+          // },
         },
         yAxis: {
           type: "value",
@@ -52,7 +52,7 @@ export default {
             name: "任务分配完成率",
             type: "line",
             stack: "Total",
-            data: [],
+            data: [1],
             smooth: true,
             areaStyle: {
               //填充的颜色
@@ -110,23 +110,23 @@ export default {
   methods: {
     async getChartsList() {
       // console.log(this.time);
-      let result = await requests.get("/allocationrat/current/get", data);
+      let result = await requests.get("/allocationrat/current/get");
       // console.log(result.data);
-      let arr = [];
-      result.data.forEach((e) => {
-        arr.push(e.time.slice(0, 10));
-      });
-      let arr2 = [];
-      result.data.forEach((e) => {
-        arr2.push(e.allocation);
-      });
-      this.LineChartOption.xAxis.data = arr;
+      // let arr = [];
+      // result.data.forEach((e) => {
+      //   arr.push(e.time);
+      // });
+      // let arr2 = [];
+      // result.data.forEach((e) => {
+      //   arr2.push(e.allocation);
+      // });
+      // this.LineChartOption.xAxis.data = arr;
 
       //   service.post("/back/statistic/flowStatistic").then((response) => {
       //     if (response.code != 0) {
       //     } else {
       // this.LineChartOption.legend.data = response.data.orgFlowRank;
-      this.LineChartOption.series[0].data = arr2;
+      // this.LineChartOption.series[0].data = arr2;
       // this.LineChartOption.series[0].data = result.data;
       this.LineChart.setOption(this.LineChartOption);
       // console.log(response.data.orgFlowRank);

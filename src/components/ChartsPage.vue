@@ -41,7 +41,7 @@
           :checked="checked5"
         ></el-checkbox>
         <el-checkbox
-          label="作战装备参数"
+          label="战损"
           @change="checkboxGroup6"
           :checked="checked6"
         ></el-checkbox>
@@ -51,7 +51,7 @@
           :checked="checked7"
         ></el-checkbox>
         <el-checkbox
-          label="战损"
+          label="杀伤链的重组率"
           @change="checkboxGroup8"
           :checked="checked8"
         ></el-checkbox>
@@ -69,6 +69,31 @@
           label="杀伤链成功率"
           @change="checkboxGroup11"
           :checked="checked11"
+        ></el-checkbox>
+        <el-checkbox
+          label="杀伤链失败率"
+          @change="checkboxGroup12"
+          :checked="checked12"
+        ></el-checkbox>
+        <el-checkbox
+          label="杀伤链完成时间"
+          @change="checkboxGroup13"
+          :checked="checked13"
+        ></el-checkbox>
+        <el-checkbox
+          label="杀伤链异构型"
+          @change="checkboxGroup14"
+          :checked="checked14"
+        ></el-checkbox>
+        <el-checkbox
+          label="杀伤链分配时间"
+          @change="checkboxGroup15"
+          :checked="checked15"
+        ></el-checkbox>
+        <el-checkbox
+          label="杀伤链性价比"
+          @change="checkboxGroup16"
+          :checked="checked16"
         ></el-checkbox>
       </el-checkbox-group>
     </el-card>
@@ -123,7 +148,7 @@
         />
       </div>
       <div>
-        <EquipmentParameters
+        <killRecombine
           :time="$route.params.time"
           :id="$route.params.id"
           v-show="checked8 === true"
@@ -150,6 +175,41 @@
           v-show="checked11 === true"
         />
       </div>
+      <div>
+        <KillFallRate
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked12 === true"
+        />
+      </div>
+      <div>
+        <KillFinishTime
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked13 === true"
+        />
+      </div>
+      <div>
+        <KillEquipment
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked14 === true"
+        />
+      </div>
+      <div>
+        <KillFindTime
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked15 === true"
+        />
+      </div>
+      <div>
+        <KillFindVal
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked16 === true"
+        />
+      </div>
     </div>
   </el-card>
 </template>
@@ -162,10 +222,15 @@ import NodeChargeNum from "../views/nodeChargeNum.vue";
 import NodeUsage from "../views/nodeUsage.vue";
 import AgentNum from "../views/agentNum.vue";
 import BattleDamage from "../views/battleDamage.vue";
-import EquipmentParameters from "../views/equipmentParameters.vue";
+import killRecombine from "../views/killRecombine.vue";
 import KillNum from "../views/killNum.vue";
 import killRate from "../views/killRate.vue";
 import runKillNum from "../views/runKillNum.vue";
+import KillFallRate from "../views/killFallRate.vue";
+import KillFinishTime from "../views/killFinishTime.vue";
+import KillEquipment from "../views/killEquipment.vue";
+import KillFindTime from "../views/killFindTime.vue";
+import KillFindVal from "../views/killFindVal.vue";
 
 export default {
   data() {
@@ -183,6 +248,11 @@ export default {
       checked9: true,
       checked10: true,
       checked11: true,
+      checked12: true,
+      checked13: true,
+      checked14: true,
+      checked15: true,
+      checked16: true,
     };
   },
   components: {
@@ -193,10 +263,15 @@ export default {
     NodeUsage,
     AgentNum,
     BattleDamage,
-    EquipmentParameters,
+    killRecombine,
     KillNum,
     killRate,
     runKillNum,
+    KillFallRate,
+    KillFinishTime,
+    KillEquipment,
+    KillFindTime,
+    KillFindVal,
   },
   methods: {
     checkboxGroup1(row) {
@@ -231,13 +306,28 @@ export default {
       console.log(row);
     },
     checkboxGroup9(row) {
-      this.checked1 = !this.checked1;
+      this.checked9 = !this.checked9;
     },
     checkboxGroup10(row) {
-      this.checked1 = !this.checked1;
+      this.checked10 = !this.checked10;
     },
     checkboxGroup11(row) {
-      this.checked1 = !this.checked1;
+      this.checked11 = !this.checked11;
+    },
+    checkboxGroup12(row) {
+      this.checked12 = !this.checked12;
+    },
+    checkboxGroup13(row) {
+      this.checked13 = !this.checked13;
+    },
+    checkboxGroup14(row) {
+      this.checked14 = !this.checked14;
+    },
+    checkboxGroup15(row) {
+      this.checked15 = !this.checked15;
+    },
+    checkboxGroup16(row) {
+      this.checked16 = !this.checked16;
     },
   },
 };

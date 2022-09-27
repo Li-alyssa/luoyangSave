@@ -1,32 +1,33 @@
 <template>
   <div>
     <!-- echarts -->
-    <div id="equipmentParameters" class="main_container"></div>
+    <div id="killRecombine" class="main_container"></div>
   </div>
 </template>
-  
-  
-  <script>
+      
+      
+      <script>
 import requests from "../api/request";
 export default {
-  props: ["time"],
+  props: ["id", "time"],
   data() {
     return {
       subtime: this.time,
+      subid: this.id,
+
       LineChartOption: {
         title: {
-          text: "作战装备参数",
-          left: "center",
+          text: "杀伤链的重组率",
+        },
+        legend: {
+          // data: [],
         },
         tooltip: {
-          trigger: "item",
-        },
-        tooltip: {
-          trigger: "item",
+          show: true, // 是否显示
         },
         xAxis: {
           type: "category",
-          data: [],
+          data: ["2022-09-27 15:00:00"],
           axisLabel: {
             interval: 0, //横轴信息全部显示
             rotate: 30, //-30度角倾斜显示
@@ -37,9 +38,9 @@ export default {
         },
         series: [
           {
-            name: "",
+            name: "杀伤链的重组率",
             type: "bar",
-            data: [],
+            data: [1],
           },
         ],
       },
@@ -48,7 +49,7 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.LineChart = this.$echarts.init(
-        document.getElementById("equipmentParameters")
+        document.getElementById("killRecombine")
       );
       this.getChartsList();
     });
@@ -56,31 +57,28 @@ export default {
   },
   methods: {
     async getChartsList() {
-      let result = await requests.get("/equipmentparameters/get");
-      // console.log(result.data);
-      // console.log(Object.values(result.data[0]));
-      var arr1 = Object.values(result.data[0]);
-      // console.log(Object.keys(result.data[0]));
-      var arr2 = Object.keys(result.data[0]);
-      var newArr = [];
-      for (var i = 0; i < arr1.length; i++) {
-        newArr.push({
-          name: arr2[i],
-          value: arr1[i],
-          type: "bar",
-        });
-      }
+      // let data = {};
+      // data["id"] = this.subid;
+      // data["time"] = this.subtime;
 
-      // console.log(newArr);
-      this.LineChartOption.xAxis.data = arr2;
+      // let result = await requests.get("/chainrecombinationrat/find");
+      // console.log(result.data);
+      //   let arr1 = [];
+      //   result.data.forEach((e) => {
+      //     arr1.push(e.time);
+      //   });
+      //   let arr2 = [];
+      //   result.data.forEach((e) => {
+      //     arr2.push(e.scounterNum);
+      //   });
+      //   this.LineChartOption.xAxis.data = arr1;
 
       //   service.post("/back/statistic/flowStatistic").then((response) => {
       //     if (response.code != 0) {
       //     } else {
       // this.LineChartOption.legend.data = response.data.orgFlowRank;
-      this.LineChartOption.series[0].data = newArr;
-      // this.LineChartOption.series[0].data.name = result.data.key;
-      //   this.LineChartOption.series[1].data = arr3;
+      // this.LineChartOption.series[0].data = result.data;
+
       //   this.LineChartOption.series[1].data = response.data.busFlow7;
       this.LineChart.setOption(this.LineChartOption);
       // console.log(response.data.orgFlowRank);
@@ -91,11 +89,11 @@ export default {
   },
 };
 </script>
-  <style scoped>
+      <style scoped>
 .main_container {
   width: 100%;
   height: 500px;
-  margin-top: 10px;
   overflow: hidden;
+  margin-top: 10px;
 }
 </style>

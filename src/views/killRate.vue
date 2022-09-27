@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <!-- echarts -->
-    <div id="nodeChargeNum" class="main_container"></div>
-  </div>
+  <div id="killRate" class="main_container"></div>
 </template>
         
         
@@ -20,7 +17,7 @@ export default {
           text: "杀伤链效率",
         },
         legend: {
-          data: ["侦察飞机死亡数量"],
+          // data: ["侦察飞机死亡数量"],
         },
         tooltip: {
           show: true, // 是否显示
@@ -38,9 +35,14 @@ export default {
         },
         series: [
           {
-            name: "侦察飞机死亡数量",
+            name: "到当前时刻击毁目标数",
             type: "bar",
-            data: [],
+            data: [1, 2, 5, 6, 3, 6, 8],
+          },
+          {
+            name: "到当前时刻杀伤链累计数量 ",
+            type: "bar",
+            data: [1, 2, 13, 4, 6, 8, 1],
           },
         ],
       },
@@ -48,49 +50,29 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.LineChart = this.$echarts.init(
-        document.getElementById("nodeChargeNum")
-      );
+      this.LineChart = this.$echarts.init(document.getElementById("killRate"));
       this.getChartsList();
     });
     // this.getBeforeDate();
   },
   methods: {
     async getChartsList() {
-      let data = {};
-      data["id"] = this.id;
-      data["time"] = this.time;
+      // let data = {};
+      // data["id"] = this.id;
+      // data["time"] = this.time;
 
-      let result = await requests.post(
-        "/killchainefficiency/history/get",
-        data
-      );
+      // let result = await requests.post(
+      //   "/killchainefficiency/history/get",
+      //   data
+      // );
       // console.log(result.data);
-      let arr1 = [];
-      result.data.forEach((e) => {
-        arr1.push(e.time);
-      });
-      let arr2 = [];
-      result.data.forEach((e) => {
-        arr2.push(e.scounterNum);
-      });
-      let arr3 = [];
-      result.data.forEach((e) => {
-        arr3.push(e.fighterNum);
-      });
-      let arr4 = [];
-      result.data.forEach((e) => {
-        arr4.push(e.attackerNum);
-      });
-      this.LineChartOption.xAxis.data = arr1;
-
-      //   service.post("/back/statistic/flowStatistic").then((response) => {
-      //     if (response.code != 0) {
-      //     } else {
-      // this.LineChartOption.legend.data = response.data.orgFlowRank;
-      this.LineChartOption.series[0].data = arr2;
-      this.LineChartOption.series[1].data = arr3;
-      this.LineChartOption.series[2].data = arr4;
+      // //   service.post("/back/statistic/flowStatistic").then((response) => {
+      // //     if (response.code != 0) {
+      // //     } else {
+      // // this.LineChartOption.legend.data = response.data.orgFlowRank;
+      // this.LineChartOption.series[0].data = arr2;
+      // this.LineChartOption.series[1].data = arr3;
+      // this.LineChartOption.series[2].data = arr4;
       //   this.LineChartOption.series[1].data = response.data.busFlow7;
       this.LineChart.setOption(this.LineChartOption);
       // console.log(response.data.orgFlowRank);
@@ -101,7 +83,8 @@ export default {
   },
 };
 </script>
-        <style scoped>
+
+<style scoped>
 .main_container {
   width: 100%;
   height: 500px;

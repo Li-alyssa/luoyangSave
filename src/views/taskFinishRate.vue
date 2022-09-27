@@ -117,11 +117,11 @@ export default {
       // console.log(result.data);
       let arr = [];
       result.data.forEach((e) => {
-        arr.push(e.time.slice(0, 10));
+        arr.push(e.time);
       });
       let arr2 = [];
       result.data.forEach((e) => {
-        arr2.push(e.allocation);
+        arr2.push(e.completionrat);
       });
       this.LineChartOption.xAxis.data = arr;
 

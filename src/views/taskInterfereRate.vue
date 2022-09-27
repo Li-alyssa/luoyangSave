@@ -37,10 +37,10 @@ export default {
           type: "category",
           boundaryGap: false,
           data: [],
-          axisLabel: {
-            interval: 0, //横轴信息全部显示
-            rotate: 30, //-30度角倾斜显示
-          },
+          // axisLabel: {
+          //   interval: 0, //横轴信息全部显示
+          //   rotate: 30, //-30度角倾斜显示
+          // },
         },
         yAxis: {
           type: "value",
@@ -115,11 +115,11 @@ export default {
       console.log(result.data);
       let arr = [];
       result.data.forEach((e) => {
-        arr.push(e.time.slice(0, 10));
+        arr.push(e.time);
       });
       let arr2 = [];
       result.data.forEach((e) => {
-        arr2.push(e.rateofsuccess);
+        arr2.push(e.interferencerat);
       });
       this.LineChartOption.xAxis.data = arr;
 
