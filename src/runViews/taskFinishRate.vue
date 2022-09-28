@@ -87,23 +87,23 @@ export default {
     async getChartsList() {
       // console.log(this.time);
 
-      // let result = await requests.get("/allocationrat/current/get");
-      // // console.log(result.data);
-      // let arr = [];
-      // result.data.forEach((e) => {
-      //   arr.push(e.time);
-      // });
-      // let arr2 = [];
-      // result.data.forEach((e) => {
-      //   arr2.push(e.completionrat);
-      // });
-      // this.LineChartOption.xAxis.data = arr;
+      let result = await requests.get("/allocationrat/current/get");
+      // console.log(result.data);
+      let arr = [];
+      result.data.forEach((e) => {
+        arr.push(e.time);
+      });
+      let arr2 = [];
+      result.data.forEach((e) => {
+        arr2.push(e.completionrat);
+      });
+      this.LineChartOption.xAxis.data = arr;
 
       // //   service.post("/back/statistic/flowStatistic").then((response) => {
       // //     if (response.code != 0) {
       // //     } else {
       // // this.LineChartOption.legend.data = response.data.orgFlowRank;
-      // this.LineChartOption.series[0].data = arr2;
+      this.LineChartOption.series[0].data = arr2;
       // this.LineChartOption.series[0].data = result.data;
       this.LineChart.setOption(this.LineChartOption);
       // console.log(response.data.orgFlowRank);
