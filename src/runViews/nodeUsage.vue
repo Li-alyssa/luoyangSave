@@ -1,5 +1,4 @@
 <template>
-  <!-- 获取实时的体系节点信息 -->
   <div>
     <!-- echarts -->
     <div id="nodeusage" class="main_container"></div>
@@ -10,10 +9,8 @@
       <script>
 import requests from "../api/request";
 export default {
-  props: ["time"],
   data() {
     return {
-      subtime: this.time,
       LineChartOption: {
         title: {
           text: "体系节点使用率",
@@ -56,18 +53,16 @@ export default {
     };
   },
   mounted() {
-    this.$nextTick(() => {
-      this.LineChart = this.$echarts.init(document.getElementById("nodeusage"));
+    this.LineChart = this.$echarts.init(document.getElementById("nodeusage"));
+    setInterval(() => {
       this.getChartsList();
-    });
+    }, 1000);
 
     // this.getBeforeDate();
   },
   methods: {
     async getChartsList() {
-      let data = new FormData();
-      data.append("time", this.subtime);
-      let result = await requests.get("/nodeusage/current/get", data);
+      let result = await requests.get("/nodeusage/current/get");
       // console.log(result.data);
       let arr1 = [];
       result.data.forEach((e) => {
@@ -108,6 +103,7 @@ export default {
 .main_container {
   width: 100%;
   height: 500px;
+  margin-top: 10px;
   overflow: hidden;
 }
 </style>

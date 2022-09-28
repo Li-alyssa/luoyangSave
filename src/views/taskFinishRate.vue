@@ -54,33 +54,6 @@ export default {
             stack: "Total",
             data: [],
             smooth: true,
-            areaStyle: {
-              //填充的颜色
-              color: {
-                //线性渐变前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
-                type: "linear",
-                x: 0,
-                y: 1,
-                x2: 0,
-                y2: 0,
-                colorStops: [
-                  {
-                    offset: 0,
-                    color: "#909399", // 0% 处的颜色
-                  },
-                  {
-                    offset: 1,
-                    color: "#909399", // 100% 处的颜色
-                  },
-                ],
-                globalCoord: false, // 缺省为 false
-              },
-            },
-            itemStyle: {
-              color: "#909399",
-              borderColor: "#13EFB7",
-              borderWidth: 2,
-            },
           },
         ],
       },

@@ -1,6 +1,5 @@
 <!-- // 页面文件中使用，如index.vue中 -->
 <template>
-  <!-- 获取实时的干扰成功率 -->
   <!-- echarts -->
   <div id="taskInterfereRate" class="main_container"></div>
 </template>
@@ -8,10 +7,8 @@
 import requests from "../api/request";
 export default {
   name: "taskInterfereRate",
-  props: ["time"],
   data() {
     return {
-      subtime: this.time,
       week: [],
       LineChart: null,
       LineChartOption: {
@@ -36,10 +33,10 @@ export default {
           type: "category",
           boundaryGap: false,
           data: [],
-          axisLabel: {
-            interval: 0, //横轴信息全部显示
-            rotate: 30, //-30度角倾斜显示
-          },
+          // axisLabel: {
+          //   interval: 0, //横轴信息全部显示
+          //   rotate: 30, //-30度角倾斜显示
+          // },
         },
         yAxis: {
           type: "value",
@@ -51,28 +48,6 @@ export default {
             stack: "Total",
             data: [],
             smooth: true,
-            areaStyle: {
-              //填充的颜色
-              color: {
-                //线性渐变前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
-                type: "linear",
-                x: 0,
-                y: 1,
-                x2: 0,
-                y2: 0,
-                colorStops: [
-                  {
-                    offset: 0,
-                    color: "#F56C6C", // 0% 处的颜色
-                  },
-                  {
-                    offset: 1,
-                    color: "#F56C6C", // 100% 处的颜色
-                  },
-                ],
-                globalCoord: false, // 缺省为 false
-              },
-            },
             itemStyle: {
               color: "#6a7985",
               borderColor: "#13EFB7",
@@ -96,31 +71,28 @@ export default {
   //   this.LineChartOption.xAxis.data = this.week;
   // },
   mounted() {
-    setTimeout(() => {
-      this.LineChart = this.$echarts.init(
-        document.getElementById("taskInterfereRate")
-      );
+    this.LineChart = this.$echarts.init(
+      document.getElementById("taskInterfereRate")
+    );
+    setInterval(() => {
       this.getChartsList();
-    }, 200);
+    }, 1000);
     // this.getBeforeDate();
   },
   methods: {
     async getChartsList() {
       // console.log(this.subtime);
-      // let data = new FormData();
-      // data.append("time", this.subtime);
-      let result = await requests.get("/interferencerat/current/get", data);
+      let result = await requests.get("/interferencerat/current/get");
       console.log(result.data);
       let arr = [];
       result.data.forEach((e) => {
-        arr.push(e.time.slice(0, 10));
+        arr.push(e.time);
       });
       let arr2 = [];
       result.data.forEach((e) => {
-        arr2.push(e.rateofsuccess);
+        arr2.push(e.interferencerat);
       });
       this.LineChartOption.xAxis.data = arr;
-
       //   service.post("/back/statistic/flowStatistic").then((response) => {
       //     if (response.code != 0) {
       //     } else {
@@ -157,7 +129,7 @@ export default {
     <style scoped>
 .main_container {
   /* margin-left: 10px; */
-  /* margin-top: 10px; */
+  margin-top: 10px;
   width: 100%;
   height: 500px;
   overflow: hidden;

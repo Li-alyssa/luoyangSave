@@ -13,64 +13,123 @@
       "
     >
       <el-checkbox-group v-model="checkList">
-        <el-checkbox
-          label="任务分配完成率"
-          @change="checkboxGroup1"
-          :checked="checked1"
-        ></el-checkbox>
-        <el-checkbox
-          label="干扰成功率"
-          :checked="checked2"
-          @change="checkboxGroup2"
-        ></el-checkbox>
-        <el-checkbox
-          label="发现目标数量"
-          @change="checkboxGroup3"
-          :checked="checked3"
-        ></el-checkbox>
-        <el-checkbox
-          label="作战智能体数量变化"
-          @change="checkboxGroup4"
-          :checked="checked4"
-        ></el-checkbox>
-        <el-checkbox
-          label="体系节点使用率"
-          @change="checkboxGroup5"
-          :checked="checked5"
-        ></el-checkbox>
-        <el-checkbox
-          label="作战装备参数"
-          @change="checkboxGroup6"
-          :checked="checked6"
-        ></el-checkbox>
-        <el-checkbox
-          label="异构装备数量"
-          @change="checkboxGroup7"
-          :checked="checked7"
-        ></el-checkbox>
-        <el-checkbox
-          label="战损"
-          @change="checkboxGroup8"
-          :checked="checked8"
-        ></el-checkbox>
-        <el-checkbox
-          label="杀伤链累计数量"
-          @change="checkboxGroup9"
-          :checked="checked9"
-        ></el-checkbox>
-        <el-checkbox
-          label="杀伤链效率"
-          @change="checkboxGroup10"
-          :checked="checked10"
-        ></el-checkbox>
-        <el-checkbox
-          label="杀伤链成功率"
-          @change="checkboxGroup11"
-          :checked="checked11"
-        ></el-checkbox>
+        <div>
+          <el-checkbox
+            label="杀伤链数量"
+            @change="checkboxGroup9"
+            :checked="checked9"
+          ></el-checkbox>
+          <el-checkbox
+            label="杀伤链成功率"
+            @change="checkboxGroup11"
+            :checked="checked11"
+          ></el-checkbox>
+          <el-checkbox
+            label="杀伤链失败率"
+            @change="checkboxGroup12"
+            :checked="checked12"
+          ></el-checkbox>
+          <el-checkbox
+            label="杀伤链分配时间"
+            @change="checkboxGroup15"
+            :checked="checked15"
+          ></el-checkbox>
+          <el-checkbox
+            label="杀伤链效率"
+            @change="checkboxGroup10"
+            :checked="checked10"
+          ></el-checkbox>
+          <el-checkbox
+            label="杀伤链完成时间"
+            @change="checkboxGroup13"
+            :checked="checked13"
+          ></el-checkbox>
+        </div>
+        <div>
+          <el-checkbox
+            label="杀伤链性价比"
+            @change="checkboxGroup16"
+            :checked="checked16"
+          ></el-checkbox>
+          <el-checkbox
+            label="杀伤链的重组率"
+            @change="checkboxGroup8"
+            :checked="checked8"
+          ></el-checkbox>
+          <el-checkbox
+            label="任务分配完成率"
+            @change="checkboxGroup1"
+            :checked="checked1"
+          ></el-checkbox>
+          <el-checkbox
+            label="干扰成功率"
+            :checked="checked2"
+            @change="checkboxGroup2"
+          ></el-checkbox>
+          <el-checkbox
+            label="发现目标数量"
+            @change="checkboxGroup3"
+            :checked="checked3"
+          ></el-checkbox>
+          <el-checkbox
+            label="体系节点使用率"
+            @change="checkboxGroup5"
+            :checked="checked5"
+          ></el-checkbox>
+        </div>
+        <div>
+          <el-checkbox
+            label="杀伤链异构型"
+            @change="checkboxGroup14"
+            :checked="checked14"
+          ></el-checkbox>
+          <el-checkbox
+            label="异构装备数量"
+            @change="checkboxGroup7"
+            :checked="checked7"
+          ></el-checkbox>
+
+          <el-checkbox
+            label="作战智能体数量变化"
+            @change="checkboxGroup4"
+            :checked="checked4"
+          ></el-checkbox>
+
+          <el-checkbox
+            label="战损"
+            @change="checkboxGroup6"
+            :checked="checked6"
+          ></el-checkbox>
+        </div>
       </el-checkbox-group>
     </el-card>
     <div style="width: 1180px; margin-left: auto; margin-right: auto">
+      <div>
+        <KillNum v-show="checked9 === true" />
+      </div>
+      <div>
+        <runKillNum v-show="checked11 === true" />
+      </div>
+      <div>
+        <KillFallRate v-show="checked12 === true" />
+      </div>
+      <div>
+        <KillFindTime v-show="checked15 === true" />
+      </div>
+      <div>
+        <killRate v-show="checked10 === true" />
+      </div>
+
+      <div>
+        <KillFinishTime v-show="checked13 === true" />
+      </div>
+
+      <div>
+        <KillFindVal v-show="checked16 === true" />
+      </div>
+      <div>
+        <killRecombine v-show="checked8 === true" />
+      </div>
       <div>
         <TaskFinishRate v-show="checked1 === true" />
       </div>
@@ -81,28 +140,20 @@
         <TargetNum v-show="checked3 === true" />
       </div>
       <div>
-        <NodeChargeNum v-show="checked4 === true" />
-      </div>
-      <div>
         <NodeUsage v-show="checked5 === true" />
       </div>
       <div>
-        <BattleDamage v-show="checked6 === true" />
+        <KillEquipment v-show="checked14 === true" />
       </div>
       <div>
         <AgentNum v-show="checked7 === true" />
       </div>
       <div>
-        <EquipmentParameters v-show="checked8 === true" />
+        <NodeChargeNum v-show="checked4 === true" />
       </div>
+
       <div>
-        <KillNum v-show="checked9 === true" />
-      </div>
-      <div>
-        <KillRate v-show="checked10 === true" />
-      </div>
-      <div>
-        <KillSuccessfulNum v-show="checked11 === true" />
+        <BattleDamage v-show="checked6 === true" />
       </div>
     </div>
   </el-card>
@@ -116,10 +167,16 @@ import NodeChargeNum from "../runViews/nodeChargeNum.vue";
 import NodeUsage from "../runViews/nodeUsage.vue";
 import AgentNum from "../runViews/agentNum.vue";
 import BattleDamage from "../runViews/battleDamage.vue";
-import EquipmentParameters from "../runViews/equipmentParameters.vue";
+import killRecombine from "../runViews/killRecombine.vue";
 import KillNum from "../runViews/killNum.vue";
-import KillRate from "../runViews/killRate.vue";
-import KillSuccessfulNum from "../runViews/killSuccessfulNum.vue";
+import killRate from "../runViews/killRate.vue";
+import runKillNum from "../runViews/runKillNum.vue";
+import KillFallRate from "../runViews/killFallRate.vue";
+import KillFinishTime from "../runViews/killFinishTime.vue";
+import KillEquipment from "../runViews/killEquipment.vue";
+import KillFindTime from "../runViews/killFindTime.vue";
+import KillFindVal from "../runViews/killFindVal.vue";
+
 export default {
   data() {
     return {
@@ -136,6 +193,11 @@ export default {
       checked9: true,
       checked10: true,
       checked11: true,
+      checked12: true,
+      checked13: true,
+      checked14: true,
+      checked15: true,
+      checked16: true,
     };
   },
   components: {
@@ -146,10 +208,15 @@ export default {
     NodeUsage,
     AgentNum,
     BattleDamage,
-    EquipmentParameters,
+    killRecombine,
     KillNum,
-    KillRate,
-    KillSuccessfulNum,
+    killRate,
+    runKillNum,
+    KillFallRate,
+    KillFinishTime,
+    KillEquipment,
+    KillFindTime,
+    KillFindVal,
   },
   methods: {
     checkboxGroup1(row) {
@@ -184,17 +251,32 @@ export default {
       console.log(row);
     },
     checkboxGroup9(row) {
-      this.checked1 = !this.checked1;
+      this.checked9 = !this.checked9;
     },
     checkboxGroup10(row) {
-      this.checked1 = !this.checked1;
+      this.checked10 = !this.checked10;
     },
     checkboxGroup11(row) {
-      this.checked1 = !this.checked1;
+      this.checked11 = !this.checked11;
+    },
+    checkboxGroup12(row) {
+      this.checked12 = !this.checked12;
+    },
+    checkboxGroup13(row) {
+      this.checked13 = !this.checked13;
+    },
+    checkboxGroup14(row) {
+      this.checked14 = !this.checked14;
+    },
+    checkboxGroup15(row) {
+      this.checked15 = !this.checked15;
+    },
+    checkboxGroup16(row) {
+      this.checked16 = !this.checked16;
     },
   },
 };
 </script>
-    
-    <style>
+
+<style>
 </style>

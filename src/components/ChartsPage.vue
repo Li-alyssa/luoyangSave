@@ -15,89 +15,155 @@
       "
     >
       <el-checkbox-group v-model="checkList">
-        <el-checkbox
-          label="任务分配完成率"
-          @change="checkboxGroup1"
-          :checked="checked1"
-        ></el-checkbox>
-        <el-checkbox
-          label="干扰成功率"
-          :checked="checked2"
-          @change="checkboxGroup2"
-        ></el-checkbox>
-        <el-checkbox
-          label="发现目标数量"
-          @change="checkboxGroup3"
-          :checked="checked3"
-        ></el-checkbox>
-        <el-checkbox
-          label="作战智能体数量变化"
-          @change="checkboxGroup4"
-          :checked="checked4"
-        ></el-checkbox>
-        <el-checkbox
-          label="体系节点使用率"
-          @change="checkboxGroup5"
-          :checked="checked5"
-        ></el-checkbox>
-        <el-checkbox
-          label="战损"
-          @change="checkboxGroup6"
-          :checked="checked6"
-        ></el-checkbox>
-        <el-checkbox
-          label="异构装备数量"
-          @change="checkboxGroup7"
-          :checked="checked7"
-        ></el-checkbox>
-        <el-checkbox
-          label="杀伤链的重组率"
-          @change="checkboxGroup8"
-          :checked="checked8"
-        ></el-checkbox>
-        <el-checkbox
-          label="杀伤链数量"
-          @change="checkboxGroup9"
-          :checked="checked9"
-        ></el-checkbox>
-        <el-checkbox
-          label="杀伤链效率"
-          @change="checkboxGroup10"
-          :checked="checked10"
-        ></el-checkbox>
-        <el-checkbox
-          label="杀伤链成功率"
-          @change="checkboxGroup11"
-          :checked="checked11"
-        ></el-checkbox>
-        <el-checkbox
-          label="杀伤链失败率"
-          @change="checkboxGroup12"
-          :checked="checked12"
-        ></el-checkbox>
-        <el-checkbox
-          label="杀伤链完成时间"
-          @change="checkboxGroup13"
-          :checked="checked13"
-        ></el-checkbox>
-        <el-checkbox
-          label="杀伤链异构型"
-          @change="checkboxGroup14"
-          :checked="checked14"
-        ></el-checkbox>
-        <el-checkbox
-          label="杀伤链分配时间"
-          @change="checkboxGroup15"
-          :checked="checked15"
-        ></el-checkbox>
-        <el-checkbox
-          label="杀伤链性价比"
-          @change="checkboxGroup16"
-          :checked="checked16"
-        ></el-checkbox>
+        <div>
+          <el-checkbox
+            label="杀伤链数量"
+            @change="checkboxGroup9"
+            :checked="checked9"
+          ></el-checkbox>
+          <el-checkbox
+            label="杀伤链成功率"
+            @change="checkboxGroup11"
+            :checked="checked11"
+          ></el-checkbox>
+          <el-checkbox
+            label="杀伤链失败率"
+            @change="checkboxGroup12"
+            :checked="checked12"
+          ></el-checkbox>
+          <el-checkbox
+            label="杀伤链分配时间"
+            @change="checkboxGroup15"
+            :checked="checked15"
+          ></el-checkbox>
+          <el-checkbox
+            label="杀伤链效率"
+            @change="checkboxGroup10"
+            :checked="checked10"
+          ></el-checkbox>
+          <el-checkbox
+            label="杀伤链完成时间"
+            @change="checkboxGroup13"
+            :checked="checked13"
+          ></el-checkbox>
+        </div>
+        <div>
+          <el-checkbox
+            label="杀伤链性价比"
+            @change="checkboxGroup16"
+            :checked="checked16"
+          ></el-checkbox>
+          <el-checkbox
+            label="杀伤链的重组率"
+            @change="checkboxGroup8"
+            :checked="checked8"
+          ></el-checkbox>
+          <el-checkbox
+            label="任务分配完成率"
+            @change="checkboxGroup1"
+            :checked="checked1"
+          ></el-checkbox>
+          <el-checkbox
+            label="干扰成功率"
+            :checked="checked2"
+            @change="checkboxGroup2"
+          ></el-checkbox>
+          <el-checkbox
+            label="发现目标数量"
+            @change="checkboxGroup3"
+            :checked="checked3"
+          ></el-checkbox>
+          <el-checkbox
+            label="体系节点使用率"
+            @change="checkboxGroup5"
+            :checked="checked5"
+          ></el-checkbox>
+        </div>
+        <div>
+          <el-checkbox
+            label="杀伤链异构型"
+            @change="checkboxGroup14"
+            :checked="checked14"
+          ></el-checkbox>
+          <el-checkbox
+            label="异构装备数量"
+            @change="checkboxGroup7"
+            :checked="checked7"
+          ></el-checkbox>
+
+          <el-checkbox
+            label="作战智能体数量变化"
+            @change="checkboxGroup4"
+            :checked="checked4"
+          ></el-checkbox>
+
+          <el-checkbox
+            label="战损"
+            @change="checkboxGroup6"
+            :checked="checked6"
+          ></el-checkbox>
+        </div>
       </el-checkbox-group>
     </el-card>
     <div style="width: 1180px; margin-left: auto; margin-right: auto">
+      <div>
+        <KillNum
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked9 === true"
+        />
+      </div>
+      <div>
+        <runKillNum
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked11 === true"
+        />
+      </div>
+      <div>
+        <KillFallRate
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked12 === true"
+        />
+      </div>
+      <div>
+        <KillFindTime
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked15 === true"
+        />
+      </div>
+      <div>
+        <killRate
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked10 === true"
+        />
+      </div>
+
+      <div>
+        <KillFinishTime
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked13 === true"
+        />
+      </div>
+
+      <div>
+        <KillFindVal
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked16 === true"
+        />
+      </div>
+      <div>
+        <killRecombine
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked8 === true"
+        />
+      </div>
       <div>
         <TaskFinishRate
           :time="$route.params.time"
@@ -120,73 +186,10 @@
         />
       </div>
       <div>
-        <NodeChargeNum
-          :time="$route.params.time"
-          :id="$route.params.id"
-          v-show="checked4 === true"
-        />
-      </div>
-      <div>
         <NodeUsage
           :time="$route.params.time"
           :id="$route.params.id"
           v-show="checked5 === true"
-        />
-      </div>
-      <div>
-        <BattleDamage
-          :time="$route.params.time"
-          :id="$route.params.id"
-          v-show="checked6 === true"
-        />
-      </div>
-      <div>
-        <AgentNum
-          :time="$route.params.time"
-          :id="$route.params.id"
-          v-show="checked7 === true"
-        />
-      </div>
-      <div>
-        <killRecombine
-          :time="$route.params.time"
-          :id="$route.params.id"
-          v-show="checked8 === true"
-        />
-      </div>
-      <div>
-        <KillNum
-          :time="$route.params.time"
-          :id="$route.params.id"
-          v-show="checked9 === true"
-        />
-      </div>
-      <div>
-        <killRate
-          :time="$route.params.time"
-          :id="$route.params.id"
-          v-show="checked10 === true"
-        />
-      </div>
-      <div>
-        <runKillNum
-          :time="$route.params.time"
-          :id="$route.params.id"
-          v-show="checked11 === true"
-        />
-      </div>
-      <div>
-        <KillFallRate
-          :time="$route.params.time"
-          :id="$route.params.id"
-          v-show="checked12 === true"
-        />
-      </div>
-      <div>
-        <KillFinishTime
-          :time="$route.params.time"
-          :id="$route.params.id"
-          v-show="checked13 === true"
         />
       </div>
       <div>
@@ -197,17 +200,25 @@
         />
       </div>
       <div>
-        <KillFindTime
+        <AgentNum
           :time="$route.params.time"
           :id="$route.params.id"
-          v-show="checked15 === true"
+          v-show="checked7 === true"
         />
       </div>
       <div>
-        <KillFindVal
+        <NodeChargeNum
           :time="$route.params.time"
           :id="$route.params.id"
-          v-show="checked16 === true"
+          v-show="checked4 === true"
+        />
+      </div>
+
+      <div>
+        <BattleDamage
+          :time="$route.params.time"
+          :id="$route.params.id"
+          v-show="checked6 === true"
         />
       </div>
     </div>

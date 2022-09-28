@@ -1,5 +1,4 @@
 <template>
-  <!-- 获取实时的体系节点数量 -->
   <div>
     <!-- echarts -->
     <div id="nodeChargeNum" class="main_container"></div>
@@ -10,16 +9,14 @@
     <script>
 import requests from "../api/request";
 export default {
-  props: ["time"],
   data() {
     return {
-      subtime: this.time,
       LineChartOption: {
         title: {
           text: "作战智能体数量变化",
         },
         legend: {
-          data: ["侦察飞机死亡数量", "决策飞机死亡数量", "攻击飞机死亡数量"],
+          // data: [],
         },
         tooltip: {
           show: true, // 是否显示
@@ -51,24 +48,38 @@ export default {
             type: "bar",
             data: [],
           },
+          {
+            name: "scounterQuantity",
+            type: "bar",
+            data: [],
+          },
+          {
+            name: "decisionQuantity",
+            type: "bar",
+            data: [],
+          },
+          {
+            name: "attackerQuantity",
+            type: "bar",
+            data: [],
+          },
         ],
       },
     };
   },
   mounted() {
-    this.$nextTick(() => {
-      this.LineChart = this.$echarts.init(
-        document.getElementById("nodeChargeNum")
-      );
+    this.LineChart = this.$echarts.init(
+      document.getElementById("nodeChargeNum")
+    );
+    setInterval(() => {
       this.getChartsList();
-    });
+    }, 1000);
+
     // this.getBeforeDate();
   },
   methods: {
     async getChartsList() {
-      let data = new FormData();
-      data.append("time", this.subtime);
-      let result = await requests.post("/nodecharge/current/get", data);
+      let result = await requests.get("/nodecharge/current/get");
       // console.log(result.data);
       let arr1 = [];
       result.data.forEach((e) => {
@@ -86,6 +97,18 @@ export default {
       result.data.forEach((e) => {
         arr4.push(e.attackerNum);
       });
+      let arr5 = [];
+      result.data.forEach((e) => {
+        arr5.push(e.scounterQuantity);
+      });
+      let arr6 = [];
+      result.data.forEach((e) => {
+        arr6.push(e.decisionQuantity);
+      });
+      let arr7 = [];
+      result.data.forEach((e) => {
+        arr7.push(e.attackerQuantity);
+      });
       this.LineChartOption.xAxis.data = arr1;
 
       //   service.post("/back/statistic/flowStatistic").then((response) => {
@@ -95,6 +118,9 @@ export default {
       this.LineChartOption.series[0].data = arr2;
       this.LineChartOption.series[1].data = arr3;
       this.LineChartOption.series[2].data = arr4;
+      this.LineChartOption.series[3].data = arr5;
+      this.LineChartOption.series[4].data = arr6;
+      this.LineChartOption.series[5].data = arr7;
       //   this.LineChartOption.series[1].data = response.data.busFlow7;
       this.LineChart.setOption(this.LineChartOption);
       // console.log(response.data.orgFlowRank);
@@ -110,5 +136,6 @@ export default {
   width: 100%;
   height: 500px;
   overflow: hidden;
+  margin-top: 10px;
 }
 </style>

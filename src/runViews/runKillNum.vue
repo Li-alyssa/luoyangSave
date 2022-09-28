@@ -1,24 +1,23 @@
 <template>
   <div>
     <!-- echarts -->
-    <div id="agentNum" class="main_container"></div>
+    <div id="runKillNum" class="main_container"></div>
   </div>
 </template>
-    
-    
-    <script>
+<script>
 import requests from "../api/request";
 export default {
   data() {
     return {
-      subtime: this.time,
       LineChartOption: {
         title: {
-          text: "异构装备数量",
-          left: "center",
+          text: "杀伤链的成功率",
+        },
+        legend: {
+          // data: ["侦察飞机死亡数量"],
         },
         tooltip: {
-          trigger: "item",
+          show: true, // 是否显示
         },
         xAxis: {
           type: "category",
@@ -33,7 +32,17 @@ export default {
         },
         series: [
           {
-            name: "",
+            name: "destoryedSum",
+            type: "bar",
+            data: [],
+          },
+          {
+            name: "killchainNum",
+            type: "bar",
+            data: [],
+          },
+          {
+            name: "efficience",
             type: "bar",
             data: [],
           },
@@ -42,7 +51,7 @@ export default {
     };
   },
   mounted() {
-    this.LineChart = this.$echarts.init(document.getElementById("agentNum"));
+    this.LineChart = this.$echarts.init(document.getElementById("runKillNum"));
     setInterval(() => {
       this.getChartsList();
     }, 1000);
@@ -51,30 +60,33 @@ export default {
   },
   methods: {
     async getChartsList() {
-      let result = await requests.get("/agentnum/get");
-      // console.log(result.data);
-      var reg = new RegExp("number", "g"); //g表示全部的
-      //         // //将json转换为字符串   将被替换内容替换为替换内容
-      let str = JSON.stringify(result.data).replace(reg, "value");
-      let data = JSON.parse(str);
-      var reg2 = new RegExp("type", "g"); //g表示全部的
-      //         // //将json转换为字符串   将被替换内容替换为替换内容
-      let str2 = JSON.stringify(data).replace(reg2, "name");
-      let data2 = JSON.parse(str2);
-      let arr = [];
-      data2.forEach((e) => {
-        arr.push(e.name);
+      let result = await requests.post("/chainsuccessful/current/get");
+      console.log(result.data);
+      let arr1 = [];
+      result.data.forEach((e) => {
+        arr1.push(e.time);
       });
-      //   this.LineChartOption.xAxis.data = arr;
+      let arr2 = [];
+      result.data.forEach((e) => {
+        arr2.push(e.destoryedSum);
+      });
+      let arr3 = [];
+      result.data.forEach((e) => {
+        arr3.push(e.killchainNum);
+      });
+      let arr4 = [];
+      result.data.forEach((e) => {
+        arr4.push(e.efficience);
+      });
+      this.LineChartOption.xAxis.data = arr1;
 
       //   service.post("/back/statistic/flowStatistic").then((response) => {
       //     if (response.code != 0) {
       //     } else {
       // this.LineChartOption.legend.data = response.data.orgFlowRank;
-      this.LineChartOption.series[0].data = data2;
-      this.LineChartOption.xAxis.data = arr;
-      //   this.LineChartOption.series[0].data.name = result.data.key;
-      //   this.LineChartOption.series[1].data = arr3;
+      this.LineChartOption.series[0].data = arr2;
+      this.LineChartOption.series[1].data = arr3;
+      this.LineChartOption.series[2].data = arr4;
       //   this.LineChartOption.series[1].data = response.data.busFlow7;
       this.LineChart.setOption(this.LineChartOption);
       // console.log(response.data.orgFlowRank);
@@ -85,7 +97,7 @@ export default {
   },
 };
 </script>
-    <style scoped>
+          <style scoped>
 .main_container {
   width: 100%;
   height: 500px;
