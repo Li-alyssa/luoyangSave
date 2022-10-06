@@ -25,4 +25,33 @@
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  outline: none;
+}
+
+a,
+button {
+  cursor: pointer;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  list-style: none;
+}
+
+img {
+  border: 0;
+}
 </style>

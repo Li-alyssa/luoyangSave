@@ -1,10 +1,9 @@
 <template>
   <div class="app-container">
-    <el-header>XXX数据可视化系统</el-header>
-
+    <el-header>马赛克数据可视化演示验证</el-header>
     <el-main>
       <!-- 实时按钮 -->
-      <div class="realTime">
+      <!-- <div class="realTime">
         <el-button
           type="danger"
           @click="handleRunTime"
@@ -12,7 +11,7 @@
           style="width: 300px; height: 50px"
           >实时</el-button
         >
-      </div>
+      </div> -->
 
       <div class="box1">
         <el-card>
@@ -27,19 +26,25 @@
               width="180"
             >
             </el-table-column>
-            <el-table-column label="时间" prop="time" width="width">
+            <el-table-column label="时间" prop="startTime" width="width">
               <template slot-scope="scope">
-                <span> {{ scope.row.time.slice(0, 10) }} </span>
+                <span> {{ scope.row.startTime }} </span>
               </template>
             </el-table-column>
             <el-table-column label="操作" width="width">
               <template slot-scope="scope">
                 <el-button
                   type="primary"
+                  @click="history(scope.row)"
+                  icon="el-icon-time"
+                  >历史</el-button
+                >
+                <!-- <el-button
+                  type="primary"
                   @click="handleHistory(scope.$index, scope.row)"
                   icon="el-icon-time"
                   >回放</el-button
-                >
+                > -->
               </template>
             </el-table-column>
           </el-table>
@@ -102,13 +107,9 @@ export default {
     // },
     async getTimeList() {
       let result = await this.$API.reqTimeList();
-      // console.log(result.data[0].id);
-      // console.log(result.data[0].time);
-      (this.reciId = result.data[0].id),
-        (this.receTime = result.data[0].time),
-        (this.tableData = result.data);
-      console.log(this.reciId, this.receTime);
+      this.tableData = result.data;
     },
+
     handleBack(index, row) {
       this.centerDialogVisible = true;
       this.time = row.time.slice(0, 10);
@@ -116,16 +117,27 @@ export default {
       data.append("time", row.time.slice(0, 10));
       let result = requests.post("/msk/chain/getchain", data);
     },
-    handleHistory(index, row) {
-      // this.$router.push(`/ChartsPage/${row.time.slice(0, 10)}`);
+    // handleHistory(index, row) {
+    //   // this.$router.push(`/ChartsPage/${row.time.slice(0, 10)}`);
+    //   this.$router.push({
+    //     name: "ChartsPage",
+    //     params: {
+    //       id: this.reciId,
+    //       time: this.receTime,
+    //     },
+    //   });
+    // },
+    history(row) {
+      // console.log(row);
       this.$router.push({
-        name: "ChartsPage",
-        params: {
-          id: this.reciId,
-          time: this.receTime,
+        name: "historyPage",
+        query: {
+          id: row.id,
+          time: row.startTime,
         },
       });
     },
+
     handleRunTime() {
       this.$router.push("/RunTime");
     },
@@ -134,29 +146,32 @@ export default {
 </script>
 
 <style>
-.echarts {
-  /* background-color: red; */
-  width: 50%;
-  height: 500px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.el-header,
-.el-footer {
+.el-header {
   background-color: #003366;
   color: #e9eef3;
   text-align: center;
   line-height: 60px;
 }
+
+.el-footer {
+  background-color: #003366;
+  color: #e9eef3;
+  text-align: center;
+
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
 .el-main {
   background-color: #e9eef3;
   /* text-align: center; */
-  line-height: 160px;
+  height: calc(100vh - 60px);
+  /* line-height: 160px; */
 }
 .box1 {
   margin: 10px auto;
   width: 75%;
-  height: 700px;
+  /* height: 700px; */
   /* background-color: green; */
 }
 </style>

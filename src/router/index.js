@@ -13,6 +13,18 @@ const routes = [
     component: Home
   },
   {
+    path: '/historyPage',
+    name: 'historyPage',
+    component: () => import('../pages/historyPage')
+  },
+
+
+
+
+
+
+
+  {
     path: '/ChartsPage/:time',
     name: 'ChartsPage',
     component: ChartsPage
