@@ -3,16 +3,25 @@
     <el-header>马赛克数据可视化演示验证</el-header>
     <el-main>
       <!-- 实时按钮 -->
-      <!-- <div class="realTime">
+      <div class="realTime">
         <el-button
           type="danger"
           @click="handleRunTime"
           icon="el-icon-s-data"
-          style="width: 300px; height: 50px"
+          style="width: 300px; height: 50px; margin-bottom: 20px"
           >实时</el-button
         >
-      </div> -->
+      </div>
 
+      <div>
+        <el-button
+          type="primary"
+          @click="handleCompared"
+          icon="el-icon-s-data"
+          style="width: 300px; height: 50px"
+          >最近两次数据对比</el-button
+        >
+      </div>
       <div class="box1">
         <el-card>
           <el-table
@@ -33,18 +42,18 @@
             </el-table-column>
             <el-table-column label="操作" width="width">
               <template slot-scope="scope">
-                <el-button
+                <!-- <el-button
                   type="primary"
                   @click="history(scope.row)"
                   icon="el-icon-time"
                   >历史</el-button
-                >
-                <!-- <el-button
+                > -->
+                <el-button
                   type="primary"
                   @click="handleHistory(scope.$index, scope.row)"
                   icon="el-icon-time"
                   >回放</el-button
-                > -->
+                >
               </template>
             </el-table-column>
           </el-table>
@@ -117,27 +126,29 @@ export default {
       data.append("time", row.time.slice(0, 10));
       let result = requests.post("/msk/chain/getchain", data);
     },
-    // handleHistory(index, row) {
-    //   // this.$router.push(`/ChartsPage/${row.time.slice(0, 10)}`);
-    //   this.$router.push({
-    //     name: "ChartsPage",
-    //     params: {
-    //       id: this.reciId,
-    //       time: this.receTime,
-    //     },
-    //   });
-    // },
-    history(row) {
-      // console.log(row);
+    handleHistory(index, row) {
+      // this.$router.push(`/ChartsPage/${row.time.slice(0, 10)}`);
       this.$router.push({
-        name: "historyPage",
+        name: "ChartsPage",
         query: {
           id: row.id,
           time: row.startTime,
         },
       });
     },
-
+    // history(row) {
+    //   // console.log(row);
+    //   this.$router.push({
+    //     name: "historyPage",
+    //     query: {
+    //       id: row.id,
+    //       time: row.startTime,
+    //     },
+    //   });
+    // },
+    handleCompared() {
+      this.$router.push("/Compared");
+    },
     handleRunTime() {
       this.$router.push("/RunTime");
     },

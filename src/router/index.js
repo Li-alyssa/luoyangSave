@@ -19,13 +19,13 @@ const routes = [
   },
 
 
-
-
-
-
-
   {
-    path: '/ChartsPage/:time',
+    path: '/Compared',
+    name: 'Compared',
+    component: () => import('../components/Compared')
+  },
+  {
+    path: '/ChartsPage',
     name: 'ChartsPage',
     component: ChartsPage
   },

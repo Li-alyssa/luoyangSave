@@ -2,31 +2,24 @@
 <template>
   <!-- echarts -->
   <div>
-    <!-- <h1>{{ subtime }} ,{{ subid }}</h1> -->
     <div id="taskFinishRate" class="main_container"></div>
   </div>
 </template>
   <script>
 import requests from "../api/request";
 export default {
-  name: "taskFinishRate",
-  props: ["id", "time"],
+  props: ["id", "id1", "id2"],
   data() {
     return {
-      subtime: this.time,
-      subid: this.id,
-      week: [],
-      LineChart: null,
+      timeid1: this.id1,
+      timeid2: this.id2,
       LineChartOption: {
         title: {
-          text: "任务分配完成统计",
+          text: "任务分配效率",
           padding: 5,
         },
         tooltip: {
           trigger: "axis",
-        },
-        legend: {
-          data: ["任务分配完成率"],
         },
         grid: {
           left: "3%",
@@ -38,10 +31,9 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: [],
+          data: [1, 2, 3, 4, 5],
           axisLabel: {
             interval: 0, //横轴信息全部显示
-            rotate: 30, //-30度角倾斜显示
           },
         },
         yAxis: {
@@ -49,9 +41,16 @@ export default {
         },
         series: [
           {
-            name: "任务分配完成率",
+            name: "1",
             type: "line",
-            stack: "Total",
+
+            data: [],
+            smooth: true,
+          },
+          {
+            name: "2",
+            type: "line",
+
             data: [],
             smooth: true,
           },
@@ -59,75 +58,88 @@ export default {
       },
     };
   },
-  // created() {
-  //   // 默认显示当天前一周的数据
-  //   let data = [];
-  //   this.start = this.getDay(+7);
-  //   this.end = this.getDay();
-  //   for (let i = 6; i >= 0; i--) {
-  //     data.push(this.getDay(-i));
-  //   }
-  //   var date = data.reverse(); //得出一周的日期进行排序
-  //   this.week = date.reverse();
-  //   this.LineChartOption.xAxis.data = this.week;
-  // },
+  watch: {
+    id1(o, n) {
+      this.timeid1 = o;
+      this.id1 = o;
+    },
+    id2(o, n) {
+      this.timeid2 = o;
+      this.id2 = o;
+    },
+  },
   mounted() {
+    this.LineChart = this.$echarts.init(
+      document.getElementById("taskFinishRate")
+    );
     setTimeout(() => {
-      this.LineChart = this.$echarts.init(
-        document.getElementById("taskFinishRate")
-      );
       this.getChartsList();
-    }, 200);
+    }, 1000);
+
     // this.getBeforeDate();
   },
   methods: {
     async getChartsList() {
-      // console.log(this.time);
-      let data = {};
-      data["id"] = this.id;
-      data["time"] = this.time;
-      let result = await requests.post("/allocationrat/history/get", data);
-      // console.log(result.data);
-      let arr = [];
-      result.data.forEach((e) => {
-        arr.push(e.time);
-      });
-      let arr2 = [];
-      result.data.forEach((e) => {
-        arr2.push(e.completionrat);
-      });
-      this.LineChartOption.xAxis.data = arr;
+      if (
+        this.timeid1 !== 0 &&
+        this.timeid2 !== 0 &&
+        typeof this.timeid1 !== "undefined" &&
+        typeof this.timeid2 !== "undefined"
+      ) {
+        let data = {};
+        data["timeid"] = this.timeid1;
+        data["type"] = "history";
+        let result = await requests.post("/tasktable/getAllocationrat", data);
+        // console.log(result);
+        let arr1 = [];
+        result.data.forEach((e) => {
+          arr1.push(e.time);
+        });
+        let arr2 = [];
+        result.data.forEach((e) => {
+          arr2.push(e.rate);
+        });
+        // this.LineChartOption.xAxis.data = arr1;
+        this.LineChartOption.series[0].data = arr2;
+        let data2 = {};
+        data2["timeid"] = this.timeid2;
+        data2["type"] = "history";
+        let result2 = await requests.post("/tasktable/getAllocationrat", data2);
+        let arr3 = [];
+        result2.data.forEach((e) => {
+          arr3.push(e.time);
+        });
+        let arr4 = [];
+        result2.data.forEach((e) => {
+          arr4.push(e.rate);
+        });
+        // this.LineChartOption.xAxis.data = arr1;
+        this.LineChartOption.series[1].data = arr4;
+      }
+      if (
+        this.id !== 0 &&
+        typeof this.timeid1 === "undefined" &&
+        typeof this.timeid2 === "undefined"
+      ) {
+        let data3 = {};
+        data3["timeid"] = this.id;
+        data3["type"] = "history";
+        let result3 = await requests.post("/tasktable/getAllocationrat", data3);
+        // console.log(result);
+        let arr5 = [];
+        result3.data.forEach((e) => {
+          arr5.push(e.time);
+        });
+        let arr6 = [];
+        result3.data.forEach((e) => {
+          arr6.push(e.rate);
+        });
+        this.LineChartOption.xAxis.data = arr5;
+        this.LineChartOption.series[0].data = arr6;
+      }
 
-      //   service.post("/back/statistic/flowStatistic").then((response) => {
-      //     if (response.code != 0) {
-      //     } else {
-      // this.LineChartOption.legend.data = response.data.orgFlowRank;
-      this.LineChartOption.series[0].data = arr2;
-      // this.LineChartOption.series[0].data = result.data;
       this.LineChart.setOption(this.LineChartOption);
-      // console.log(response.data.orgFlowRank);
-      // }
-      //   }
-      //   );
     },
-    // getDay(day) {
-    //   var today = new Date();
-    //   var targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
-    //   today.setTime(targetday_milliseconds); //注意，这行是关键代码
-    //   var tYear = today.getFullYear();
-    //   var tMonth = today.getMonth();
-    //   var tDate = today.getDate();
-    //   tMonth = this.doHandleMonth(tMonth + 1);
-    //   tDate = this.doHandleMonth(tDate);
-    //   return tYear + "/" + tMonth + "/" + tDate;
-    // },
-    // doHandleMonth(month) {
-    //   var m = month;
-    //   if (month.toString().length == 1) {
-    //     m = month;
-    //   }
-    //   return m;
-    // },
   },
 };
 </script>

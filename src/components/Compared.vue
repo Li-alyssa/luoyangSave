@@ -1,9 +1,7 @@
 <template>
   <el-card>
     <el-header>
-      <div>
-        {{ this.$route.query.time }}历史数据回放{{ this.$route.query.id }}
-      </div>
+      <div>数据对比</div>
     </el-header>
     <el-card
       style="
@@ -107,125 +105,101 @@
     </el-card>
     <div style="width: 1180px; margin-left: auto; margin-right: auto">
       <div>
-        <KillNum
-          :time="$route.query.time"
-          :id="$route.query.id"
-          v-show="checked9 === true"
-        />
+        <KillNum :id1="timeid1" :id2="timeid2" v-show="checked9 === true" />
       </div>
       <div>
-        <runKillNum
-          :time="$route.query.time"
-          :id="$route.query.id"
-          v-show="checked11 === true"
-        />
+        <runKillNum :id1="timeid1" :id2="timeid2" v-show="checked11 === true" />
       </div>
       <div>
         <KillFallRate
-          :time="$route.query.time"
-          :id="$route.query.id"
+          :id1="timeid1"
+          :id2="timeid2"
           v-show="checked12 === true"
         />
       </div>
       <div>
         <KillFindTime
-          :time="$route.query.time"
-          :id="$route.query.id"
+          :id1="timeid1"
+          :id2="timeid2"
           v-show="checked15 === true"
         />
       </div>
       <div>
-        <killRate
-          :time="$route.query.time"
-          :id="$route.query.id"
-          v-show="checked10 === true"
-        />
+        <killRate :id1="timeid1" :id2="timeid2" v-show="checked10 === true" />
       </div>
 
       <div>
         <KillFinishTime
-          :time="$route.query.time"
-          :id="$route.query.id"
+          :id1="timeid1"
+          :id2="timeid2"
           v-show="checked13 === true"
         />
       </div>
 
       <div>
         <KillFindVal
-          :time="$route.query.time"
-          :id="$route.query.id"
+          :id1="timeid1"
+          :id2="timeid2"
           v-show="checked16 === true"
         />
       </div>
       <div>
         <killRecombine
-          :time="$route.query.time"
-          :id="$route.query.id"
+          :id1="timeid1"
+          :id2="timeid2"
           v-show="checked8 === true"
         />
       </div>
       <div>
         <TaskFinishRate
-          :time="$route.query.time"
-          :id="$route.query.id"
+          :id1="timeid1"
+          :id2="timeid2"
           v-show="checked1 === true"
         />
       </div>
       <div>
         <TaskInterfereRate
-          :time="$route.query.time"
+          :time="$route.params.time"
           v-show="checked2 === true"
-          :id="$route.query.id"
+          :id="$route.params.id"
         />
       </div>
       <div>
-        <TargetNum
-          :time="$route.query.time"
-          :id="$route.query.id"
-          v-show="checked3 === true"
-        />
+        <TargetNum :id1="timeid1" :id2="timeid2" v-show="checked3 === true" />
       </div>
       <div>
-        <NodeUsage
-          :time="$route.query.time"
-          :id="$route.query.id"
-          v-show="checked5 === true"
-        />
+        <NodeUsage :id1="timeid1" :id2="timeid2" v-show="checked5 === true" />
       </div>
       <div>
         <KillEquipment
-          :time="$route.query.time"
-          :id="$route.query.id"
+          :id1="timeid1"
+          :id2="timeid2"
           v-show="checked14 === true"
         />
       </div>
       <div>
-        <AgentNum
-          :time="$route.query.time"
-          :id="$route.query.id"
-          v-show="checked7 === true"
-        />
+        <AgentNum :id1="timeid1" :id2="timeid2" v-show="checked7 === true" />
       </div>
       <div>
         <NodeChargeNum
-          :time="$route.query.time"
-          :id="$route.query.id"
+          :id1="timeid1"
+          :id2="timeid2"
           v-show="checked4 === true"
         />
       </div>
 
       <div>
         <BattleDamage
-          :time="$route.query.time"
-          :id="$route.query.id"
+          :id1="timeid1"
+          :id2="timeid2"
           v-show="checked6 === true"
         />
       </div>
     </div>
   </el-card>
 </template>
-
-<script>
+  
+  <script>
 import TaskFinishRate from "../views/taskFinishRate.vue";
 import TaskInterfereRate from "../views/taskInterfereRate.vue";
 import TargetNum from "../views/targetNum.vue";
@@ -242,10 +216,13 @@ import KillFinishTime from "../views/killFinishTime.vue";
 import KillEquipment from "../views/killEquipment.vue";
 import KillFindTime from "../views/killFindTime.vue";
 import KillFindVal from "../views/killFindVal.vue";
+import TaskAllocationRat from "../pages/task/taskAllocationRat.vue";
 
 export default {
   data() {
     return {
+      timeid1: 0,
+      timeid2: 0,
       time: "",
       checkList: [],
       checked1: true,
@@ -283,8 +260,21 @@ export default {
     KillEquipment,
     KillFindTime,
     KillFindVal,
+    TaskAllocationRat,
+  },
+  watch: {
+    timeid1(val, oldVal) {},
   },
   methods: {
+    //获取两次时间id
+    async getTimeList() {
+      let result = await this.$API.reqTimeList();
+      //   this.tableData = result.data;
+      this.timeid1 = result.data[0].id;
+      this.timeid2 = result.data[1].id;
+      console.log(result.data);
+    },
+
     checkboxGroup1(row) {
       this.checked1 = !this.checked1;
     },
@@ -341,8 +331,12 @@ export default {
       this.checked16 = !this.checked16;
     },
   },
+
+  created() {
+    this.getTimeList();
+  },
 };
 </script>
-
-<style>
+  
+  <style>
 </style>

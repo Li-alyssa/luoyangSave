@@ -4,14 +4,14 @@
     <div id="taskAllocationRat" class="main_container"></div>
   </div>
 </template>
-      
-      
       <script>
 import requests from "../../api/request";
 export default {
-  props: ["id"],
+  props: ["id", "id1", "id2"],
   data() {
     return {
+      timeid1: this.id1,
+      timeid2: this.id2,
       LineChartOption: {
         title: {
           text: "任务分配效率",
@@ -30,7 +30,7 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: [],
+          data: [1, 2, 3, 4, 5],
           axisLabel: {
             interval: 0, //横轴信息全部显示
           },
@@ -46,36 +46,88 @@ export default {
             data: [],
             smooth: true,
           },
+          {
+            name: "",
+            type: "line",
+            stack: "Total",
+            data: [],
+            smooth: true,
+          },
         ],
       },
     };
   },
+  watch: {
+    id1(o, n) {
+      this.timeid1 = o;
+      this.id1 = o;
+    },
+    id2(o, n) {
+      this.timeid2 = o;
+      this.id2 = o;
+    },
+  },
   mounted() {
-    this.$nextTick(() => {
-      this.LineChart = this.$echarts.init(
-        document.getElementById("taskAllocationRat")
-      );
+    this.LineChart = this.$echarts.init(
+      document.getElementById("taskAllocationRat")
+    );
+    setTimeout(() => {
       this.getChartsList();
-    });
+    }, 1000);
+
     // this.getBeforeDate();
   },
   methods: {
     async getChartsList() {
-      let data = {};
-      data["timeid"] = this.id;
-      data["type"] = "history";
-      let result = await requests.post("/tasktable/getAllocationrat", data);
-      console.log(result);
-      let arr1 = [];
-      result.data.forEach((e) => {
-        arr1.push(e.time);
-      });
-      let arr2 = [];
-      result.data.forEach((e) => {
-        arr2.push(e.rate);
-      });
-      this.LineChartOption.xAxis.data = arr1;
-      this.LineChartOption.series[0].data = arr2;
+      if (this.timeid1 === 1 && this.timeid2 === 2) {
+        let data = {};
+        data["timeid"] = this.timeid1;
+        data["type"] = "history";
+        let result = await requests.post("/tasktable/getAllocationrat", data);
+        // console.log(result);
+        let arr1 = [];
+        result.data.forEach((e) => {
+          arr1.push(e.time);
+        });
+        let arr2 = [];
+        result.data.forEach((e) => {
+          arr2.push(e.rate);
+        });
+        // this.LineChartOption.xAxis.data = arr1;
+        this.LineChartOption.series[0].data = arr2;
+        let data2 = {};
+        data2["timeid"] = this.timeid2;
+        data2["type"] = "history";
+        let result2 = await requests.post("/tasktable/getAllocationrat", data2);
+        let arr3 = [];
+        result2.data.forEach((e) => {
+          arr3.push(e.time);
+        });
+        let arr4 = [];
+        result2.data.forEach((e) => {
+          arr4.push(e.rate);
+        });
+        // this.LineChartOption.xAxis.data = arr1;
+        this.LineChartOption.series[1].data = arr4;
+      }
+      if (this.id === 1) {
+        let data3 = {};
+        data3["timeid"] = this.id;
+        data3["type"] = "history";
+        let result3 = await requests.post("/tasktable/getAllocationrat", data3);
+        // console.log(result);
+        let arr5 = [];
+        result3.data.forEach((e) => {
+          arr5.push(e.time);
+        });
+        let arr6 = [];
+        result3.data.forEach((e) => {
+          arr6.push(e.rate);
+        });
+        this.LineChartOption.xAxis.data = arr5;
+        this.LineChartOption.series[0].data = arr6;
+      }
+
       this.LineChart.setOption(this.LineChartOption);
     },
   },
