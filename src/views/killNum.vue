@@ -4,12 +4,10 @@
     <div id="killNum" class="main_container"></div>
   </div>
 </template>
-      
-      
       <script>
 import requests from "../api/request";
 export default {
-  props: ["time", "id"],
+  props: ["id", "id1", "id2"],
   data() {
     return {
       subtime: this.time,
@@ -17,17 +15,15 @@ export default {
 
       LineChartOption: {
         title: {
-          text: "杀伤链数量",
+          text: "杀伤链累计数量",
         },
-        legend: {
-          // data: ["侦察飞机死亡数量"],
-        },
+
         tooltip: {
           show: true, // 是否显示
         },
         xAxis: {
           type: "category",
-          data: [],
+          data: [1, 2],
           axisLabel: {
             interval: 0, //横轴信息全部显示
             rotate: 30, //-30度角倾斜显示
@@ -38,37 +34,101 @@ export default {
         },
         series: [
           {
-            name: "当前时刻杀伤链数量",
+            name: "1",
             type: "bar",
-            data: [122, 12, 34, 567, 89, 234, 678],
+            data: [],
+          },
+          {
+            name: "2",
+            type: "bar",
+            data: [],
           },
         ],
       },
     };
   },
+  watch: {
+    id1(o, n) {
+      this.timeid1 = o;
+      this.id1 = o;
+    },
+    id2(o, n) {
+      this.timeid2 = o;
+      this.id2 = o;
+    },
+    id(o, n) {
+      this.timeid = o;
+      this.id = o;
+    },
+  },
   mounted() {
-    this.$nextTick(() => {
-      this.LineChart = this.$echarts.init(document.getElementById("killNum"));
+    this.LineChart = this.$echarts.init(document.getElementById("killNum"));
+    setTimeout(() => {
       this.getChartsList();
-    });
+    }, 1000);
     // this.getBeforeDate();
   },
   methods: {
     async getChartsList() {
-      let data = {};
-      data["id"] = this.id;
-      data["time"] = this.time;
+      if (
+        this.timeid1 !== 0 &&
+        this.timeid2 !== 0 &&
+        typeof this.timeid1 !== "undefined" &&
+        typeof this.timeid2 !== "undefined"
+      ) {
+        let data = {};
+        data["timeid"] = this.timeid1;
+        data["type"] = "history";
+        let result = await requests.post("/killchaintable/getAccu", data);
+        // console.log(result);
+        let arr1 = [];
+        result.data.forEach((e) => {
+          arr1.push(e.time);
+        });
+        let arr2 = [];
+        result.data.forEach((e) => {
+          arr2.push(e.num);
+        });
+        // this.LineChartOption.xAxis.data = arr1;
+        this.LineChartOption.series[0].data = arr2;
+        let data2 = {};
+        data2["timeid"] = this.timeid2;
+        data2["type"] = "history";
+        let result2 = await requests.post("/killchaintable/getAccu", data2);
+        let arr3 = [];
+        result2.data.forEach((e) => {
+          arr3.push(e.time);
+        });
+        let arr4 = [];
+        result2.data.forEach((e) => {
+          arr4.push(e.num);
+        });
+        // this.LineChartOption.xAxis.data = arr1;
+        this.LineChartOption.series[1].data = arr4;
+      }
 
-      // let result = await requests.get("/killchain/find");
-      // console.log(result.data);
-      // this.LineChartOption.series[0].data = result.data;
-      // this.LineChartOption.xAxis.data = arr1;
-
+      if (
+        this.id !== 0 &&
+        typeof this.timeid1 === "undefined" &&
+        typeof this.timeid2 === "undefined"
+      ) {
+        let data3 = {};
+        data3["timeid"] = this.id;
+        data3["type"] = "history";
+        let result3 = await requests.post("/killchaintable/getAccu", data3);
+        // console.log(result);
+        let arr5 = [];
+        result3.data.forEach((e) => {
+          arr5.push(e.num);
+        });
+        let arr6 = [];
+        result3.data.forEach((e) => {
+          arr6.push(e.time);
+        });
+        this.LineChartOption.xAxis.data = arr6;
+        this.LineChartOption.series[0].data = arr5;
+      }
       this.LineChart.setOption(this.LineChartOption);
-      // console.log(response.data.orgFlowRank);
-      // }
-      //   }
-      //   );
     },
   },
 };

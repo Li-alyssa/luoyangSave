@@ -23,7 +23,7 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: [1, 2, 3, 4, 5, 6, 7, 8],
+          data: [1, 2, 3, 4, 5],
           axisLabel: {
             interval: 0, //横轴信息全部显示
             rotate: 30, //-30度角倾斜显示
@@ -85,28 +85,29 @@ export default {
         // console.log(result);
         let arr1 = [];
         result.data.forEach((e) => {
-          arr1.push(e.actionid);
+          arr1.push(e.closetime);
         });
         let arr2 = [];
         result.data.forEach((e) => {
           arr2.push(e.time);
         });
         // this.LineChartOption.xAxis.data = arr1;
-        this.LineChartOption.series[0].data = arr2;
+
         let data2 = {};
         data2["timeid"] = this.timeid2;
         data2["type"] = "history";
         let result2 = await requests.post("/tasktable/getClose", data2);
         let arr3 = [];
         result2.data.forEach((e) => {
-          arr3.push(e.actionid);
+          arr3.push(e.closetime);
         });
         let arr4 = [];
         result2.data.forEach((e) => {
           arr4.push(e.time);
         });
         // this.LineChartOption.xAxis.data = arr1;
-        this.LineChartOption.series[1].data = arr4;
+        this.LineChartOption.series[0].data = arr1;
+        this.LineChartOption.series[1].data = arr3;
       }
 
       if (
@@ -115,20 +116,21 @@ export default {
         typeof this.timeid2 === "undefined"
       ) {
         let data3 = {};
-        data3["timeid"] = this.timeid;
+        data3["timeid"] = this.id;
         data3["type"] = "history";
         let result3 = await requests.post("/tasktable/getClose", data3);
         // console.log(result);
         let arr5 = [];
         result3.data.forEach((e) => {
-          arr5.push(e.actionid);
+          arr5.push(e.time);
         });
         let arr6 = [];
         result3.data.forEach((e) => {
-          arr6.push(e.time);
+          arr6.push(e.closetime);
         });
         this.LineChartOption.xAxis.data = arr5;
         this.LineChartOption.series[0].data = arr6;
+        // this.LineChartOption.series[1].data = arr6;
       }
 
       this.LineChart.setOption(this.LineChartOption);

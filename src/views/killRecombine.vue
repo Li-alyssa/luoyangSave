@@ -9,15 +9,15 @@
       <script>
 import requests from "../api/request";
 export default {
-  props: ["id", "time"],
+  props: ["id", "id1", "id2"],
   data() {
     return {
-      subtime: this.time,
-      subid: this.id,
+      timeid1: this.id1,
+      timeid2: this.id2,
 
       LineChartOption: {
         title: {
-          text: "杀伤链的重组率",
+          text: "马赛克体系去中心化程度",
         },
         legend: {
           // data: [],
@@ -27,7 +27,7 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: ["2022-09-27 15:00:00"],
+          data: [],
           axisLabel: {
             interval: 0, //横轴信息全部显示
             rotate: 30, //-30度角倾斜显示
@@ -38,53 +38,100 @@ export default {
         },
         series: [
           {
-            name: "杀伤链的重组率",
+            name: "",
             type: "bar",
-            data: [1],
+            data: [],
+          },
+          {
+            name: "",
+            type: "bar",
+            data: [],
           },
         ],
       },
     };
   },
+  watch: {
+    id1(o, n) {
+      this.timeid1 = o;
+      this.id1 = o;
+    },
+    id2(o, n) {
+      this.timeid2 = o;
+      this.id2 = o;
+    },
+  },
   mounted() {
-    this.$nextTick(() => {
-      this.LineChart = this.$echarts.init(
-        document.getElementById("killRecombine")
-      );
+    this.LineChart = this.$echarts.init(
+      document.getElementById("killRecombine")
+    );
+    setTimeout(() => {
       this.getChartsList();
-    });
+    }, 1000);
+
     // this.getBeforeDate();
   },
   methods: {
     async getChartsList() {
-      // let data = {};
-      // data["id"] = this.subid;
-      // data["time"] = this.subtime;
+      if (
+        this.timeid1 !== 0 &&
+        this.timeid2 !== 0 &&
+        typeof this.timeid1 !== "undefined" &&
+        typeof this.timeid2 !== "undefined"
+      ) {
+        let data = {};
+        data["timeid"] = this.timeid1;
+        data["type"] = "history";
+        let result = await requests.post("/killchaintable/getUndegree", data);
+        // console.log(result);
+        let arr1 = [];
+        result.data.forEach((e) => {
+          arr1.push(e.time);
+        });
+        let arr2 = [];
+        result.data.forEach((e) => {
+          arr2.push(e.rate);
+        });
+        // this.LineChartOption.xAxis.data = arr1;
+        this.LineChartOption.series[0].data = arr2;
+        let data2 = {};
+        data2["timeid"] = this.timeid2;
+        data2["type"] = "history";
+        let result2 = await requests.post("/killchaintable/getUndegree", data2);
+        let arr3 = [];
+        result2.data.forEach((e) => {
+          arr3.push(e.time);
+        });
+        let arr4 = [];
+        result2.data.forEach((e) => {
+          arr4.push(e.rate);
+        });
+        // this.LineChartOption.xAxis.data = arr1;
+        this.LineChartOption.series[1].data = arr4;
+      }
+      if (
+        this.id !== 0 &&
+        typeof this.timeid1 === "undefined" &&
+        typeof this.timeid2 === "undefined"
+      ) {
+        let data3 = {};
+        data3["timeid"] = this.id;
+        data3["type"] = "history";
+        let result3 = await requests.post("/killchaintable/getUndegree", data3);
+        // console.log(result);
+        let arr5 = [];
+        result3.data.forEach((e) => {
+          arr5.push(e.time);
+        });
+        let arr6 = [];
+        result3.data.forEach((e) => {
+          arr6.push(e.rate);
+        });
+        this.LineChartOption.xAxis.data = arr5;
+        this.LineChartOption.series[0].data = arr6;
+      }
 
-      // let result = await requests.get("/chainrecombinationrat/find");
-      // console.log(result.data);
-      //   let arr1 = [];
-      //   result.data.forEach((e) => {
-      //     arr1.push(e.time);
-      //   });
-      //   let arr2 = [];
-      //   result.data.forEach((e) => {
-      //     arr2.push(e.scounterNum);
-      //   });
-      //   this.LineChartOption.xAxis.data = arr1;
-
-      //   service.post("/back/statistic/flowStatistic").then((response) => {
-      //     if (response.code != 0) {
-      //     } else {
-      // this.LineChartOption.legend.data = response.data.orgFlowRank;
-      // this.LineChartOption.series[0].data = result.data;
-
-      //   this.LineChartOption.series[1].data = response.data.busFlow7;
       this.LineChart.setOption(this.LineChartOption);
-      // console.log(response.data.orgFlowRank);
-      // }
-      //   }
-      //   );
     },
   },
 };

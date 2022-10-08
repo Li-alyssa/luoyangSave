@@ -25,7 +25,7 @@
             :checked="checked11"
           ></el-checkbox>
           <el-checkbox
-            label="杀伤链失败率"
+            label="杀伤网复杂度"
             @change="checkboxGroup12"
             :checked="checked12"
           ></el-checkbox>
@@ -35,12 +35,12 @@
             :checked="checked15"
           ></el-checkbox>
           <el-checkbox
-            label="杀伤链效率"
+            label="杀伤链闭合效率"
             @change="checkboxGroup10"
             :checked="checked10"
           ></el-checkbox>
           <el-checkbox
-            label="杀伤链完成时间"
+            label="杀伤链闭合时间"
             @change="checkboxGroup13"
             :checked="checked13"
           ></el-checkbox>
