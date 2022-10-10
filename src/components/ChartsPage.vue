@@ -64,22 +64,22 @@
             :checked="checked1"
           ></el-checkbox>
           <el-checkbox
-            label="干扰成功率"
+            label="杀伤链重组率"
             :checked="checked2"
             @change="checkboxGroup2"
           ></el-checkbox>
           <el-checkbox
-            label="发现目标数量"
+            label="杀伤链重组效率"
             @change="checkboxGroup3"
             :checked="checked3"
           ></el-checkbox>
           <el-checkbox
-            label="体系节点使用率"
+            label="当前时刻杀伤链数量"
             @change="checkboxGroup5"
             :checked="checked5"
           ></el-checkbox>
         </div>
-        <div>
+        <!-- <div>
           <el-checkbox
             label="杀伤链异构型"
             @change="checkboxGroup14"
@@ -102,7 +102,7 @@
             @change="checkboxGroup6"
             :checked="checked6"
           ></el-checkbox>
-        </div>
+        </div> -->
       </el-checkbox-group>
     </el-card>
     <div style="width: 1180px; margin-left: auto; margin-right: auto">
@@ -192,7 +192,7 @@
           v-show="checked5 === true"
         />
       </div>
-      <div>
+      <!-- <div>
         <KillEquipment
           :time="$route.query.time"
           :id="$route.query.id"
@@ -220,7 +220,7 @@
           :id="$route.query.id"
           v-show="checked6 === true"
         />
-      </div>
+      </div> -->
     </div>
   </el-card>
 </template>

@@ -5,7 +5,7 @@ module.exports = {
         // 配置不同的后台API地址
         proxy: {
             '/api': {
-                target: 'http://115.25.46.178:9001/',
+                target: 'http://115.25.46.208:9001/',
                 ws: false,
                 changeOrigin: true,
                 pathRewrite: {

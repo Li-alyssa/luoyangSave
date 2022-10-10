@@ -13,10 +13,11 @@ import requests from './request';
 
 
 
-export const reqTimeList = () => {
+export const reqTimeList = (data) => {
     //发请求
     return requests({
-        url: '/timetable/get',
-        method: 'get'
+        url: '/timetable/getTime',
+        method: 'post',
+        data
     })
 }

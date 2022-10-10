@@ -9,22 +9,21 @@
   <script>
 import requests from "../api/request";
 export default {
-  props: ["time", "id"],
+  props: ["id", "id1", "id2"],
   data() {
     return {
-      subtime: this.time,
-      subtid: this.id,
-
+      timeid1: this.id1,
+      timeid2: this.id2,
       LineChartOption: {
         title: {
-          text: "发现目标数量",
+          text: "杀伤链重组效率",
         },
-        legend: {
-          data: ["预警雷达数量", "雷达车数量", "导弹车数量"],
+        tooltip: {
+          trigger: "axis",
         },
         xAxis: {
           type: "category",
-          data: [],
+          data: [1, 2, 3, 4, 5, 6, 7, 8],
           axisLabel: {
             interval: 0, //横轴信息全部显示
             rotate: 30, //-30度角倾斜显示
@@ -35,17 +34,12 @@ export default {
         },
         series: [
           {
-            name: "预警雷达数量",
+            name: "",
             type: "bar",
             data: [],
           },
           {
-            name: "雷达车数量",
-            type: "bar",
-            data: [],
-          },
-          {
-            name: "导弹车数量",
+            name: "",
             type: "bar",
             data: [],
           },
@@ -53,53 +47,91 @@ export default {
       },
     };
   },
+  watch: {
+    id1(o, n) {
+      this.timeid1 = o;
+      this.id1 = o;
+    },
+    id2(o, n) {
+      this.timeid2 = o;
+      this.id2 = o;
+    },
+    id(o, n) {
+      this.timeid = o;
+      this.id = o;
+    },
+  },
   mounted() {
-    this.$nextTick(() => {
-      //  执行echarts方法
-      this.LineChart = this.$echarts.init(document.getElementById("targetNum"));
+    this.LineChart = this.$echarts.init(document.getElementById("targetNum"));
+    setTimeout(() => {
       this.getChartsList();
-    });
-
+    }, 1000);
     // this.getBeforeDate();
   },
   methods: {
     async getChartsList() {
-      let data = {};
-      data["id"] = this.id;
-      data["time"] = this.time;
-      let result = await requests.post("/targetnum/history/get", data);
-      // console.log(result.data);
-      let arr1 = [];
-      result.data.forEach((e) => {
-        arr1.push(e.time);
-      });
-      let arr2 = [];
-      result.data.forEach((e) => {
-        arr2.push(e.wrader);
-      });
-      let arr3 = [];
-      result.data.forEach((e) => {
-        arr3.push(e.radar);
-      });
-      let arr4 = [];
-      result.data.forEach((e) => {
-        arr4.push(e.missile);
-      });
-      this.LineChartOption.xAxis.data = arr1;
+      if (
+        this.timeid1 !== 0 &&
+        this.timeid2 !== 0 &&
+        typeof this.timeid1 !== "undefined" &&
+        typeof this.timeid2 !== "undefined"
+      ) {
+        let data = {};
+        data["timeid"] = this.timeid1;
+        data["type"] = "history";
+        let result = await requests.post("/regrouptable/getEfficiency", data);
+        // console.log(result);
+        let arr1 = [];
+        result.data.forEach((e) => {
+          arr1.push(e.rate);
+        });
+        let arr2 = [];
+        result.data.forEach((e) => {
+          arr2.push(e.time);
+        });
+        // this.LineChartOption.xAxis.data = arr1;
 
-      //   service.post("/back/statistic/flowStatistic").then((response) => {
-      //     if (response.code != 0) {
-      //     } else {
-      // this.LineChartOption.legend.data = response.data.orgFlowRank;
-      this.LineChartOption.series[0].data = arr2;
-      this.LineChartOption.series[1].data = arr3;
-      this.LineChartOption.series[2].data = arr4;
-      //   this.LineChartOption.series[1].data = response.data.busFlow7;
+        let data2 = {};
+        data2["timeid"] = this.timeid2;
+        data2["type"] = "history";
+        let result2 = await requests.post("/regrouptable/getEfficiency", data2);
+        let arr3 = [];
+        result2.data.forEach((e) => {
+          arr3.push(e.rate);
+        });
+        let arr4 = [];
+        result2.data.forEach((e) => {
+          arr4.push(e.time);
+        });
+        // this.LineChartOption.xAxis.data = arr1;
+        this.LineChartOption.series[0].data = arr1;
+        this.LineChartOption.series[1].data = arr3;
+      }
+
+      if (
+        this.id !== 0 &&
+        typeof this.timeid1 === "undefined" &&
+        typeof this.timeid2 === "undefined"
+      ) {
+        let data3 = {};
+        data3["timeid"] = this.id;
+        data3["type"] = "history";
+        let result3 = await requests.post("/regrouptable/getEfficiency", data3);
+        // console.log(result);
+        let arr5 = [];
+        result3.data.forEach((e) => {
+          arr5.push(e.time);
+        });
+        let arr6 = [];
+        result3.data.forEach((e) => {
+          arr6.push(e.rate);
+        });
+        this.LineChartOption.xAxis.data = arr5;
+        this.LineChartOption.series[0].data = arr6;
+        // this.LineChartOption.series[1].data = arr6;
+      }
+
       this.LineChart.setOption(this.LineChartOption);
-      // console.log(response.data.orgFlowRank);
-      // }
-      //   }
-      //   );
     },
   },
 };

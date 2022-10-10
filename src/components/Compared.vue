@@ -52,7 +52,7 @@
             :checked="checked16"
           ></el-checkbox>
           <el-checkbox
-            label="杀伤链的重组率"
+            label="马赛克体系去中心化程度"
             @change="checkboxGroup8"
             :checked="checked8"
           ></el-checkbox>
@@ -62,22 +62,22 @@
             :checked="checked1"
           ></el-checkbox>
           <el-checkbox
-            label="干扰成功率"
+            label="杀伤链重组率"
             :checked="checked2"
             @change="checkboxGroup2"
           ></el-checkbox>
           <el-checkbox
-            label="发现目标数量"
+            label="杀伤链重组效率"
             @change="checkboxGroup3"
             :checked="checked3"
           ></el-checkbox>
           <el-checkbox
-            label="体系节点使用率"
+            label="当前时刻杀伤链数量"
             @change="checkboxGroup5"
             :checked="checked5"
           ></el-checkbox>
         </div>
-        <div>
+        <!-- <div>
           <el-checkbox
             label="杀伤链异构型"
             @change="checkboxGroup14"
@@ -100,7 +100,7 @@
             @change="checkboxGroup6"
             :checked="checked6"
           ></el-checkbox>
-        </div>
+        </div> -->
       </el-checkbox-group>
     </el-card>
     <div style="width: 1180px; margin-left: auto; margin-right: auto">
@@ -159,9 +159,9 @@
       </div>
       <div>
         <TaskInterfereRate
-          :time="$route.params.time"
+          :id1="timeid1"
+          :id2="timeid2"
           v-show="checked2 === true"
-          :id="$route.params.id"
         />
       </div>
       <div>
@@ -170,7 +170,7 @@
       <div>
         <NodeUsage :id1="timeid1" :id2="timeid2" v-show="checked5 === true" />
       </div>
-      <div>
+      <!-- <div>
         <KillEquipment
           :id1="timeid1"
           :id2="timeid2"
@@ -194,7 +194,7 @@
           :id2="timeid2"
           v-show="checked6 === true"
         />
-      </div>
+      </div> -->
     </div>
   </el-card>
 </template>
@@ -217,7 +217,7 @@ import KillEquipment from "../views/killEquipment.vue";
 import KillFindTime from "../views/killFindTime.vue";
 import KillFindVal from "../views/killFindVal.vue";
 import TaskAllocationRat from "../pages/task/taskAllocationRat.vue";
-
+import requests from "../api/request";
 export default {
   data() {
     return {
@@ -241,6 +241,8 @@ export default {
       checked14: true,
       checked15: true,
       checked16: true,
+      page: 1,
+      pageSize: 100,
     };
   },
   components: {
@@ -268,10 +270,14 @@ export default {
   methods: {
     //获取两次时间id
     async getTimeList() {
-      let result = await this.$API.reqTimeList();
+      let data = {};
+      data["page"] = this.page;
+      data["size"] = this.pageSize;
+      let result = await requests.post("/timetable/getTime", data);
+      console.log(result.data);
       //   this.tableData = result.data;
-      this.timeid1 = result.data[0].id;
-      this.timeid2 = result.data[1].id;
+      this.timeid1 = result.data.list[result.data.list.length - 2].id;
+      this.timeid2 = result.data.list[result.data.list.length - 1].id;
       console.log(result.data);
     },
 

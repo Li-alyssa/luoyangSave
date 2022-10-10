@@ -58,14 +58,16 @@
             </el-table-column>
           </el-table>
 
-          <!-- <el-pagination
-        :total="total"
-        :current-page="1"
-        :page-size="3"
-        @current-change="getPageList"
-        layout="prev, pager, next, jumper, total"
-        style="margin-top: 20px; text-align: center"
-      ></el-pagination> -->
+          <el-pagination
+            background
+            @current-change="handleCurrentChange"
+            :current-page="page"
+            :page-size="pageSize"
+            :total="total"
+            layout="prev, pager, next, jumper"
+            style="margin-top: 20px; text-align: center"
+          >
+          </el-pagination>
         </el-card>
       </div>
     </el-main>
@@ -74,6 +76,7 @@
 </template>
 
 <script>
+import requests from "../api/request";
 export default {
   name: "",
   components: {},
@@ -86,7 +89,7 @@ export default {
       reciId: "",
       receTime: "",
       page: 1,
-      pageSize: 3,
+      pageSize: 10,
       total: 0,
       time: "",
     };
@@ -97,35 +100,16 @@ export default {
     this.getTimeList();
   },
   methods: {
-    // async getPageList(pager = 1) {
-    //   this.page = pager;
-    //   //解构出参数
-    //   //当向服务器发送请求时，函数需要携带参数，应在data中初始化两个字段，代表给服务器传递参数
-    //   const { page, pageSize } = this;
-    //   let result = await this.$API.reqPageList(page, pageSize);
-    //   console.log(result.data);
-    //   this.tableData = result.data.tableList.list;
-    //   this.total = result.data.tableList.total;
-    //   console.log(this.total);
-    // },
-    // handleDownload(index, row) {
-    //   // console.log(index, row.times);
-    //   console.log(row.times);
-    //   window.open(`/api/mskCommand/mskCommand/getdata?time=${row.times}`);
-    //   // this.$API.reqDownload(row.times);
-    // },
     async getTimeList() {
-      let result = await this.$API.reqTimeList();
-      this.tableData = result.data;
+      let data = {};
+      data["page"] = this.page;
+      data["size"] = this.pageSize;
+      let result = await requests.post("/timetable/getTime", data);
+      console.log(result);
+      this.total = result.data.total;
+      this.tableData = result.data.list;
     },
 
-    handleBack(index, row) {
-      this.centerDialogVisible = true;
-      this.time = row.time.slice(0, 10);
-      let data = new FormData();
-      data.append("time", row.time.slice(0, 10));
-      let result = requests.post("/msk/chain/getchain", data);
-    },
     handleHistory(index, row) {
       // this.$router.push(`/ChartsPage/${row.time.slice(0, 10)}`);
       this.$router.push({
@@ -135,6 +119,11 @@ export default {
           time: row.startTime,
         },
       });
+    },
+    handleCurrentChange(val) {
+      console.log(val);
+      this.$set(this, "page", val);
+      this.getTimeList();
     },
     // history(row) {
     //   // console.log(row);
