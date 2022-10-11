@@ -12,7 +12,7 @@ export default {
     return {
       LineChartOption: {
         title: {
-          text: "杀伤链失败率",
+          text: "杀伤网复杂度",
         },
         legend: {
           // data: ["侦察飞机死亡数量"],
@@ -22,7 +22,7 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: [1, 2, 3, 4, 5, 6, 7],
+          data: [],
           axisLabel: {
             interval: 0, //横轴信息全部显示
             rotate: 30, //-30度角倾斜显示
@@ -33,7 +33,7 @@ export default {
         },
         series: [
           {
-            name: "杀伤链失败率",
+            name: "",
             type: "bar",
             data: [],
           },
@@ -53,16 +53,21 @@ export default {
   },
   methods: {
     async getChartsList() {
-      let result = await requests.post("/chainsuccessful/find");
-      console.log(result.data);
-      this.LineChartOption.series[0].data = result.data;
-      //   this.LineChartOption.xAxis.data = arr1;
-
+      let data = {};
+      data["type"] = "live";
+      let result = await requests.post("/killchaintable/getComplexity", data);
+      // console.log(result);
+      let arr5 = [];
+      result.data.forEach((e) => {
+        arr5.push(e.time);
+      });
+      let arr6 = [];
+      result.data.forEach((e) => {
+        arr6.push(e.rate);
+      });
+      this.LineChartOption.xAxis.data = arr5;
+      this.LineChartOption.series[0].data = arr6;
       this.LineChart.setOption(this.LineChartOption);
-      // console.log(response.data.orgFlowRank);
-      // }
-      //   }
-      //   );
     },
   },
 };

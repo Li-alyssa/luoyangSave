@@ -13,17 +13,14 @@ export default {
     return {
       LineChartOption: {
         title: {
-          text: "杀伤链的重组率",
-        },
-        legend: {
-          // data: [],
+          text: "马赛克体系去中心化程度",
         },
         tooltip: {
           show: true, // 是否显示
         },
         xAxis: {
           type: "category",
-          data: ["2022-09-27 15:00:00"],
+          data: [],
           axisLabel: {
             interval: 0, //横轴信息全部显示
             rotate: 30, //-30度角倾斜显示
@@ -34,9 +31,9 @@ export default {
         },
         series: [
           {
-            name: "杀伤链的重组率",
+            name: "",
             type: "bar",
-            data: [1],
+            data: [],
           },
         ],
       },
@@ -54,30 +51,21 @@ export default {
   },
   methods: {
     async getChartsList() {
-      // let result = await requests.get("/chainrecombinationrat/find");
-      // console.log(result.data);
-      //   let arr1 = [];
-      //   result.data.forEach((e) => {
-      //     arr1.push(e.time);
-      //   });
-      //   let arr2 = [];
-      //   result.data.forEach((e) => {
-      //     arr2.push(e.scounterNum);
-      //   });
-      //   this.LineChartOption.xAxis.data = arr1;
-
-      //   service.post("/back/statistic/flowStatistic").then((response) => {
-      //     if (response.code != 0) {
-      //     } else {
-      // this.LineChartOption.legend.data = response.data.orgFlowRank;
-      // this.LineChartOption.series[0].data = result.data;
-
-      //   this.LineChartOption.series[1].data = response.data.busFlow7;
+      let data3 = {};
+      data3["type"] = "live";
+      let result3 = await requests.post("/killchaintable/getUndegree", data3);
+      // console.log(result);
+      let arr5 = [];
+      result3.data.forEach((e) => {
+        arr5.push(e.time);
+      });
+      let arr6 = [];
+      result3.data.forEach((e) => {
+        arr6.push(e.rate);
+      });
+      this.LineChartOption.xAxis.data = arr5;
+      this.LineChartOption.series[0].data = arr6;
       this.LineChart.setOption(this.LineChartOption);
-      // console.log(response.data.orgFlowRank);
-      // }
-      //   }
-      //   );
     },
   },
 };

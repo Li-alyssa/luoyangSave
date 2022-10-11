@@ -25,7 +25,7 @@
             :checked="checked11"
           ></el-checkbox>
           <el-checkbox
-            label="杀伤链失败率"
+            label="杀伤网复杂度"
             @change="checkboxGroup12"
             :checked="checked12"
           ></el-checkbox>
@@ -35,12 +35,12 @@
             :checked="checked15"
           ></el-checkbox>
           <el-checkbox
-            label="杀伤链效率"
+            label="杀伤链闭合效率"
             @change="checkboxGroup10"
             :checked="checked10"
           ></el-checkbox>
           <el-checkbox
-            label="杀伤链完成时间"
+            label="杀伤链闭合时间"
             @change="checkboxGroup13"
             :checked="checked13"
           ></el-checkbox>
@@ -52,7 +52,7 @@
             :checked="checked16"
           ></el-checkbox>
           <el-checkbox
-            label="杀伤链的重组率"
+            label="马赛克体系去中心化程度"
             @change="checkboxGroup8"
             :checked="checked8"
           ></el-checkbox>
@@ -62,22 +62,22 @@
             :checked="checked1"
           ></el-checkbox>
           <el-checkbox
-            label="干扰成功率"
+            label="杀伤链重组率"
             :checked="checked2"
             @change="checkboxGroup2"
           ></el-checkbox>
           <el-checkbox
-            label="发现目标数量"
+            label="杀伤链重组效率"
             @change="checkboxGroup3"
             :checked="checked3"
           ></el-checkbox>
           <el-checkbox
-            label="体系节点使用率"
+            label="当前时刻杀伤链数量"
             @change="checkboxGroup5"
             :checked="checked5"
           ></el-checkbox>
         </div>
-        <div>
+        <!-- <div>
           <el-checkbox
             label="杀伤链异构型"
             @change="checkboxGroup14"
@@ -100,61 +100,125 @@
             @change="checkboxGroup6"
             :checked="checked6"
           ></el-checkbox>
-        </div>
+        </div> -->
       </el-checkbox-group>
     </el-card>
     <div style="width: 1180px; margin-left: auto; margin-right: auto">
       <div>
-        <KillNum v-show="checked9 === true" />
+        <KillNum
+          :time="$route.query.time"
+          :id="$route.query.id"
+          v-show="checked9 === true"
+        />
       </div>
       <div>
-        <runKillNum v-show="checked11 === true" />
+        <runKillNum
+          :time="$route.query.time"
+          :id="$route.query.id"
+          v-show="checked11 === true"
+        />
       </div>
       <div>
-        <KillFallRate v-show="checked12 === true" />
+        <KillFallRate
+          :time="$route.query.time"
+          :id="$route.query.id"
+          v-show="checked12 === true"
+        />
       </div>
       <div>
-        <KillFindTime v-show="checked15 === true" />
+        <KillFindTime
+          :time="$route.query.time"
+          :id="$route.query.id"
+          v-show="checked15 === true"
+        />
       </div>
       <div>
-        <killRate v-show="checked10 === true" />
+        <killRate
+          :time="$route.query.time"
+          :id="$route.query.id"
+          v-show="checked10 === true"
+        />
       </div>
 
       <div>
-        <KillFinishTime v-show="checked13 === true" />
+        <KillFinishTime
+          :time="$route.query.time"
+          :id="$route.query.id"
+          v-show="checked13 === true"
+        />
       </div>
 
       <div>
-        <KillFindVal v-show="checked16 === true" />
+        <KillFindVal
+          :time="$route.query.time"
+          :id="$route.query.id"
+          v-show="checked16 === true"
+        />
       </div>
       <div>
-        <killRecombine v-show="checked8 === true" />
+        <killRecombine
+          :time="$route.query.time"
+          :id="$route.query.id"
+          v-show="checked8 === true"
+        />
       </div>
       <div>
-        <TaskFinishRate v-show="checked1 === true" />
+        <TaskFinishRate
+          :time="$route.query.time"
+          :id="$route.query.id"
+          v-show="checked1 === true"
+        />
       </div>
       <div>
-        <TaskInterfereRate v-show="checked2 === true" />
+        <TaskInterfereRate
+          :time="$route.query.time"
+          v-show="checked2 === true"
+          :id="$route.query.id"
+        />
       </div>
       <div>
-        <TargetNum v-show="checked3 === true" />
+        <TargetNum
+          :time="$route.query.time"
+          :id="$route.query.id"
+          v-show="checked3 === true"
+        />
       </div>
       <div>
-        <NodeUsage v-show="checked5 === true" />
+        <NodeUsage
+          :time="$route.query.time"
+          :id="$route.query.id"
+          v-show="checked5 === true"
+        />
+      </div>
+      <!-- <div>
+        <KillEquipment
+          :time="$route.query.time"
+          :id="$route.query.id"
+          v-show="checked14 === true"
+        />
       </div>
       <div>
-        <KillEquipment v-show="checked14 === true" />
+        <AgentNum
+          :time="$route.query.time"
+          :id="$route.query.id"
+          v-show="checked7 === true"
+        />
       </div>
       <div>
-        <AgentNum v-show="checked7 === true" />
-      </div>
-      <div>
-        <NodeChargeNum v-show="checked4 === true" />
+        <NodeChargeNum
+          :time="$route.query.time"
+          :id="$route.query.id"
+          v-show="checked4 === true"
+        />
       </div>
 
       <div>
-        <BattleDamage v-show="checked6 === true" />
-      </div>
+        <BattleDamage
+          :time="$route.query.time"
+          :id="$route.query.id"
+          v-show="checked6 === true"
+        />
+      </div> -->
     </div>
   </el-card>
 </template>

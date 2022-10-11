@@ -10,7 +10,7 @@ export default {
     return {
       LineChartOption: {
         title: {
-          text: "杀伤链效率",
+          text: "杀伤链闭合效率",
         },
         legend: {
           // data: ["侦察飞机死亡数量"],
@@ -31,14 +31,9 @@ export default {
         },
         series: [
           {
-            name: "到当前时刻击毁目标数",
+            name: "",
             type: "bar",
-            data: [1, 2, 5, 6, 3, 6, 8],
-          },
-          {
-            name: "到当前时刻杀伤链累计数量 ",
-            type: "bar",
-            data: [1, 2, 13, 4, 6, 8, 1],
+            data: [],
           },
         ],
       },
@@ -54,23 +49,21 @@ export default {
   },
   methods: {
     async getChartsList() {
-      // let result = await requests.post(
-      //   "/killchainefficiency/history/get"
-      // );
-      // console.log(result.data);
-      // //   service.post("/back/statistic/flowStatistic").then((response) => {
-      // //     if (response.code != 0) {
-      // //     } else {
-      // // this.LineChartOption.legend.data = response.data.orgFlowRank;
-      // this.LineChartOption.series[0].data = arr2;
-      // this.LineChartOption.series[1].data = arr3;
-      // this.LineChartOption.series[2].data = arr4;
-      //   this.LineChartOption.series[1].data = response.data.busFlow7;
+      let data3 = {};
+      data3["type"] = "live";
+      let result3 = await requests.post("/tasktable/getCloseEff", data3);
+      // console.log(result);
+      let arr5 = [];
+      result3.data.forEach((e) => {
+        arr5.push(e.time);
+      });
+      let arr6 = [];
+      result3.data.forEach((e) => {
+        arr6.push(e.rate);
+      });
+      this.LineChartOption.xAxis.data = arr5;
+      this.LineChartOption.series[0].data = arr6;
       this.LineChart.setOption(this.LineChartOption);
-      // console.log(response.data.orgFlowRank);
-      // }
-      //   }
-      //   );
     },
   },
 };

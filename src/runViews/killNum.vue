@@ -13,7 +13,7 @@ export default {
     return {
       LineChartOption: {
         title: {
-          text: "杀伤链数量",
+          text: "杀伤链累计数量",
         },
         legend: {
           // data: ["侦察飞机死亡数量"],
@@ -34,9 +34,9 @@ export default {
         },
         series: [
           {
-            name: "当前时刻杀伤链数量",
+            name: "",
             type: "bar",
-            data: [122, 12, 34, 567, 89, 234, 678],
+            data: [],
           },
         ],
       },
@@ -52,16 +52,22 @@ export default {
   },
   methods: {
     async getChartsList() {
-      // let result = await requests.get("/killchain/find");
-      // console.log(result.data);
-      // this.LineChartOption.series[0].data = result.data;
-      // this.LineChartOption.xAxis.data = arr1;
+      let data3 = {};
+      data3["type"] = "live";
+      let result3 = await requests.post("/killchaintable/getAccu", data3);
+      // console.log(result);
+      let arr5 = [];
+      result3.data.forEach((e) => {
+        arr5.push(e.num);
+      });
+      let arr6 = [];
+      result3.data.forEach((e) => {
+        arr6.push(e.time);
+      });
+      this.LineChartOption.xAxis.data = arr6;
+      this.LineChartOption.series[0].data = arr5;
 
       this.LineChart.setOption(this.LineChartOption);
-      // console.log(response.data.orgFlowRank);
-      // }
-      //   }
-      //   );
     },
   },
 };

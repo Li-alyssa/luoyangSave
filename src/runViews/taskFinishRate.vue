@@ -16,14 +16,11 @@ export default {
       LineChart: null,
       LineChartOption: {
         title: {
-          text: "任务分配完成统计",
+          text: "任务分配效率",
           padding: 5,
         },
         tooltip: {
           trigger: "axis",
-        },
-        legend: {
-          data: ["任务分配完成率"],
         },
         grid: {
           left: "3%",
@@ -46,33 +43,14 @@ export default {
         },
         series: [
           {
-            name: "任务分配完成率",
+            name: "",
             type: "line",
-            stack: "Total",
-            data: [1, 2, 34, 42, 12],
-            smooth: true,
-            itemStyle: {
-              color: "#909399",
-              borderColor: "#13EFB7",
-              borderWidth: 2,
-            },
+            data: [],
           },
         ],
       },
     };
   },
-  // created() {
-  //   // 默认显示当天前一周的数据
-  //   let data = [];
-  //   this.start = this.getDay(+7);
-  //   this.end = this.getDay();
-  //   for (let i = 6; i >= 0; i--) {
-  //     data.push(this.getDay(-i));
-  //   }
-  //   var date = data.reverse(); //得出一周的日期进行排序
-  //   this.week = date.reverse();
-  //   this.LineChartOption.xAxis.data = this.week;
-  // },
   mounted() {
     this.LineChart = this.$echarts.init(
       document.getElementById("taskFinishRate")
@@ -85,50 +63,22 @@ export default {
   },
   methods: {
     async getChartsList() {
-      // console.log(this.time);
-
-      let result = await requests.get("/allocationrat/current/get");
-      // console.log(result.data);
-      let arr = [];
-      result.data.forEach((e) => {
-        arr.push(e.time);
+      let data3 = {};
+      data3["type"] = "live";
+      let result3 = await requests.post("/tasktable/getAllocationrat", data3);
+      // console.log(result);
+      let arr5 = [];
+      result3.data.forEach((e) => {
+        arr5.push(e.time);
       });
-      let arr2 = [];
-      result.data.forEach((e) => {
-        arr2.push(e.completionrat);
+      let arr6 = [];
+      result3.data.forEach((e) => {
+        arr6.push(e.rate);
       });
-      this.LineChartOption.xAxis.data = arr;
-
-      // //   service.post("/back/statistic/flowStatistic").then((response) => {
-      // //     if (response.code != 0) {
-      // //     } else {
-      // // this.LineChartOption.legend.data = response.data.orgFlowRank;
-      this.LineChartOption.series[0].data = arr2;
-      // this.LineChartOption.series[0].data = result.data;
+      this.LineChartOption.xAxis.data = arr5;
+      this.LineChartOption.series[0].data = arr6;
       this.LineChart.setOption(this.LineChartOption);
-      // console.log(response.data.orgFlowRank);
-      // }
-      //   }
-      //   );
     },
-    // getDay(day) {
-    //   var today = new Date();
-    //   var targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
-    //   today.setTime(targetday_milliseconds); //注意，这行是关键代码
-    //   var tYear = today.getFullYear();
-    //   var tMonth = today.getMonth();
-    //   var tDate = today.getDate();
-    //   tMonth = this.doHandleMonth(tMonth + 1);
-    //   tDate = this.doHandleMonth(tDate);
-    //   return tYear + "/" + tMonth + "/" + tDate;
-    // },
-    // doHandleMonth(month) {
-    //   var m = month;
-    //   if (month.toString().length == 1) {
-    //     m = month;
-    //   }
-    //   return m;
-    // },
   },
 };
 </script>

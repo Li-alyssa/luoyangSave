@@ -32,7 +32,7 @@ export default {
         },
         series: [
           {
-            name: "杀伤链分配时间",
+            name: "",
             type: "bar",
             data: [],
           },
@@ -52,29 +52,24 @@ export default {
   },
   methods: {
     async getChartsList() {
-      let result = await requests.post("/killchain/findTime");
-      console.log(result.data);
-      let arr1 = [];
-      result.data.forEach((e) => {
-        arr1.push(e.time);
+      let data3 = {};
+      data3["type"] = "live";
+      let result3 = await requests.post(
+        "/killchaintable/getAllocateTime",
+        data3
+      );
+      // console.log(result);
+      let arr5 = [];
+      result3.data.forEach((e) => {
+        arr5.push(e.time);
       });
-      let arr2 = [];
-      result.data.forEach((e) => {
-        arr2.push(e.allocationtime);
+      let arr6 = [];
+      result3.data.forEach((e) => {
+        arr6.push(e.allocationtime);
       });
-      this.LineChartOption.xAxis.data = arr1;
-
-      //   service.post("/back/statistic/flowStatistic").then((response) => {
-      //     if (response.code != 0) {
-      //     } else {
-      // this.LineChartOption.legend.data = response.data.orgFlowRank;
-      this.LineChartOption.series[0].data = arr2;
-      //   this.LineChartOption.series[1].data = response.data.busFlow7;
+      this.LineChartOption.xAxis.data = arr5;
+      this.LineChartOption.series[0].data = arr6;
       this.LineChart.setOption(this.LineChartOption);
-      // console.log(response.data.orgFlowRank);
-      // }
-      //   }
-      //   );
     },
   },
 };

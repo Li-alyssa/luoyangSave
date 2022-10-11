@@ -13,11 +13,9 @@ export default {
     return {
       LineChartOption: {
         title: {
-          text: "发现目标数量",
+          text: "杀伤链重组效率",
         },
-        legend: {
-          data: ["预警雷达数量", "雷达车数量", "导弹车数量"],
-        },
+
         xAxis: {
           type: "category",
           data: [],
@@ -31,17 +29,7 @@ export default {
         },
         series: [
           {
-            name: "预警雷达数量",
-            type: "bar",
-            data: [],
-          },
-          {
-            name: "雷达车数量",
-            type: "bar",
-            data: [],
-          },
-          {
-            name: "导弹车数量",
+            name: "",
             type: "bar",
             data: [],
           },
@@ -60,39 +48,21 @@ export default {
   },
   methods: {
     async getChartsList() {
-      let result = await requests.get("/targetnum/current/get");
-      // console.log(result.data);
-      let arr1 = [];
-      result.data.forEach((e) => {
-        arr1.push(e.time);
+      let data3 = {};
+      data3["type"] = "live";
+      let result3 = await requests.post("/regrouptable/getEfficiency", data3);
+      // console.log(result);
+      let arr5 = [];
+      result3.data.forEach((e) => {
+        arr5.push(e.time);
       });
-      let arr2 = [];
-      result.data.forEach((e) => {
-        arr2.push(e.wrader);
+      let arr6 = [];
+      result3.data.forEach((e) => {
+        arr6.push(e.rate);
       });
-      let arr3 = [];
-      result.data.forEach((e) => {
-        arr3.push(e.radar);
-      });
-      let arr4 = [];
-      result.data.forEach((e) => {
-        arr4.push(e.missile);
-      });
-      this.LineChartOption.xAxis.data = arr1;
-
-      //   service.post("/back/statistic/flowStatistic").then((response) => {
-      //     if (response.code != 0) {
-      //     } else {
-      // this.LineChartOption.legend.data = response.data.orgFlowRank;
-      this.LineChartOption.series[0].data = arr2;
-      this.LineChartOption.series[1].data = arr3;
-      this.LineChartOption.series[2].data = arr4;
-      //   this.LineChartOption.series[1].data = response.data.busFlow7;
+      this.LineChartOption.xAxis.data = arr5;
+      this.LineChartOption.series[0].data = arr6;
       this.LineChart.setOption(this.LineChartOption);
-      // console.log(response.data.orgFlowRank);
-      // }
-      //   }
-      //   );
     },
   },
 };
