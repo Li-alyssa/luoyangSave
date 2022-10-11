@@ -11,6 +11,8 @@ import requests from "../api/request";
 export default {
   data() {
     return {
+      arr1: [],
+      arr2: [],
       LineChartOption: {
         title: {
           text: "马赛克体系去中心化程度",
@@ -53,18 +55,33 @@ export default {
     async getChartsList() {
       let data3 = {};
       data3["type"] = "live";
-      let result3 = await requests.post("/killchaintable/getUndegree", data3);
+      let result = await requests.post("/killchaintable/getUndegree", data3);
       // console.log(result);
-      let arr5 = [];
-      result3.data.forEach((e) => {
-        arr5.push(e.time);
+      result.data.forEach((e) => {
+        this.arr1.push(e.time);
       });
-      let arr6 = [];
-      result3.data.forEach((e) => {
-        arr6.push(e.rate);
+      if (this.arr1.length == 7) {
+        var newArr = this.arr1.slice(0);
+        newArr.splice(0, 1);
+        this.arr1 = newArr;
+        // console.log(newArr);
+      }
+      result.data.forEach((e) => {
+        this.arr2.push(e.rate);
       });
-      this.LineChartOption.xAxis.data = arr5;
-      this.LineChartOption.series[0].data = arr6;
+      if (this.arr2.length == 7) {
+        var newArr2 = this.arr2.slice(0);
+        newArr2.splice(0, 1);
+        this.arr2 = newArr2;
+      }
+      if (this.arr1.length < 7) {
+        this.LineChartOption.xAxis.data = this.arr1;
+        this.LineChartOption.series[0].data = this.arr2;
+      }
+      if (this.arr1.length == 7) {
+        this.LineChartOption.xAxis.data = this.arr1;
+        this.LineChartOption.series[0].data = this.arr2;
+      }
       this.LineChart.setOption(this.LineChartOption);
     },
   },

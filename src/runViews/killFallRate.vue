@@ -10,6 +10,8 @@ import requests from "../api/request";
 export default {
   data() {
     return {
+      arr1: [],
+      arr2: [],
       LineChartOption: {
         title: {
           text: "杀伤网复杂度",
@@ -57,16 +59,32 @@ export default {
       data["type"] = "live";
       let result = await requests.post("/killchaintable/getComplexity", data);
       // console.log(result);
-      let arr5 = [];
       result.data.forEach((e) => {
-        arr5.push(e.time);
+        this.arr1.push(e.time);
       });
-      let arr6 = [];
+      if (this.arr1.length == 7) {
+        var newArr = this.arr1.slice(0);
+        newArr.splice(0, 1);
+        this.arr1 = newArr;
+        // console.log(newArr);
+      }
       result.data.forEach((e) => {
-        arr6.push(e.rate);
+        this.arr2.push(e.rate);
       });
-      this.LineChartOption.xAxis.data = arr5;
-      this.LineChartOption.series[0].data = arr6;
+      if (this.arr2.length == 7) {
+        var newArr2 = this.arr2.slice(0);
+        newArr2.splice(0, 1);
+        this.arr2 = newArr2;
+      }
+      if (this.arr1.length < 7) {
+        this.LineChartOption.xAxis.data = this.arr1;
+        this.LineChartOption.series[0].data = this.arr2;
+      }
+      if (this.arr1.length == 7) {
+        this.LineChartOption.xAxis.data = this.arr1;
+        this.LineChartOption.series[0].data = this.arr2;
+      }
+
       this.LineChart.setOption(this.LineChartOption);
     },
   },
